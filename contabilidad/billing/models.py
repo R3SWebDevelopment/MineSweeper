@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext as _
+
+from crum import get_current_user
 
 
 class TicketParser(models.Model):
@@ -25,7 +29,11 @@ class Ticket(models.Model):
     data = JSONField(null=False, default={})
 
     def save(self, *args, **kwargs):
-        user = None
+        user = get_current_user()
+
+        if user is None or not user.is_authenticated:
+            raise ValidationError(_('Need to be log into the system to create the ticket'))
+
         if self.pk is None:
             self.created_by = user
         else:
