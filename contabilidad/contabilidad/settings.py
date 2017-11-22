@@ -49,6 +49,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+MIDDLEWARE += ('crum.CurrentRequestUserMiddleware',)  # CRUM middleware
+
 ROOT_URLCONF = 'contabilidad.urls'
 
 TEMPLATES = [
