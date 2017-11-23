@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.postgres.fields import JSONField
+from django.contrib.postgres.fields import JSONField, ArrayField
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
@@ -28,7 +28,7 @@ class Ticket(models.Model):
     updated_by = models.ForeignKey(User, null=True, related_name="tickets_updated")
     data = JSONField(null=False, default={})
     is_invoiced = models.BooleanField(default=False, null=False)
-    log = JSONField(null=False, default={})
+    log = ArrayField(JSONField(), null=False, default=[])
 
     def save(self, *args, **kwargs):
         user = get_current_user()
@@ -38,6 +38,9 @@ class Ticket(models.Model):
 
         if self.pk is None:
             self.created_by = user
+            self.log = {
+                'logs': []
+            }
         else:
             self.updated_by = user
         super(Ticket, self).save(*args, **kwargs)
