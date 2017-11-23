@@ -17,10 +17,6 @@ class Store(models.Model):
     parser = models.ForeignKey(TicketParser, null=False, related_name='store')
 
 
-class TicketsImage(models.Model):
-    image = models.ImageField(null=False, upload_to='billing/tickets')
-
-
 class Ticket(models.Model):
     store = models.ForeignKey(Store, null=False, related_name='ticket')
     created_at = models.DateTimeField(null=False, auto_now_add=True)
@@ -44,3 +40,8 @@ class Ticket(models.Model):
             self.updated_by = user
             self.log = self.log.append(build_log(user, _('Updated the ticket')))
         super(Ticket, self).save(*args, **kwargs)
+
+
+class TicketImage(models.Model):
+    image = models.ImageField(null=False, upload_to='billing/tickets')
+    ticket = models.ForeignKey(Ticket, null=False, related_name='images')
