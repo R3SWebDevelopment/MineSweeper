@@ -3,6 +3,7 @@ from django.contrib.postgres.fields import JSONField, ArrayField
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
+from utils.logs import build_log
 
 from crum import get_current_user
 
@@ -38,9 +39,8 @@ class Ticket(models.Model):
 
         if self.pk is None:
             self.created_by = user
-            self.log = {
-                'logs': []
-            }
+            self.log = [build_log(user, _('Created the ticket'))]
         else:
             self.updated_by = user
+            self.log = self.log.append(build_log(user, _('Updated the ticket')))
         super(Ticket, self).save(*args, **kwargs)
