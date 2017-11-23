@@ -8,5 +8,6 @@ schema_view = get_swagger_view(title=_('Accounting API'))
 
 urlpatterns = [
     url(r"^admin/", admin.site.urls),
-    url(r'^api-token-auth/', views.obtain_auth_token)
+    url(r'^api-token-auth/', views.obtain_auth_token),
+    url(r'^$', schema_view)
 ]
