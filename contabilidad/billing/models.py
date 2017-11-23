@@ -27,6 +27,8 @@ class Ticket(models.Model):
     created_by = models.ForeignKey(User, null=False, related_name="tickets_created")
     updated_by = models.ForeignKey(User, null=True, related_name="tickets_updated")
     data = JSONField(null=False, default={})
+    is_invoiced = models.BooleanField(default=False, null=False)
+    log = JSONField(null=False, default={})
 
     def save(self, *args, **kwargs):
         user = get_current_user()
