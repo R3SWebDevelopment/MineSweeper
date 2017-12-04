@@ -23,6 +23,5 @@ class TicketSerializer(serializers.ModelSerializer):
         model = Ticket
         fields = ('store', 'created_at', 'updated_at', 'created_by', 'updated_by', 'is_invoiced', 'log', 'info')
 
-
     def get_info(self, obj):
         return {}
