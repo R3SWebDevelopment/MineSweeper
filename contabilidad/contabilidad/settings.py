@@ -83,11 +83,11 @@ WSGI_APPLICATION = 'contabilidad.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['DATABASE_NAME'] or 'postgres',
-        'USER': os.environ['DATABASE_USER'] or 'postgres',
-        'HOST': os.environ['DATABASE_HOST'] or 'db',
-        'PASSWORD': os.environ['DATABASE_PASSWORD'] or '',
-        'PORT': os.environ['DATABASE_PORT'] or 5432,
+        'NAME': os.environ.get('DATABASE_NAME', 'postgres') or 'postgres',
+        'USER': os.environ.get('DATABASE_USER', 'postgres') or 'postgres',
+        'HOST': os.environ.get('DATABASE_HOST', 'db') or 'db',
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', '') or '',
+        'PORT': os.environ.get('DATABASE_PORT', 5432) or 5432,
     }
 }
 
@@ -127,9 +127,9 @@ REST_FRAMEWORK = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = os.environ['LANGUAGE_CODE'] or 'es-mx'
+LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE', 'es-mx') or 'es-mx'
 
-TIME_ZONE = os.environ['TIME_ZONE'] or 'America/Monterrey'
+TIME_ZONE = os.environ.get('TIME_ZONE', 'America/Monterrey') or 'America/Monterrey'
 
 USE_I18N = True
 
