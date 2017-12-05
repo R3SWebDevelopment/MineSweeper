@@ -31,7 +31,6 @@ ALLOWED_HOSTS = ALLOWED_HOSTS_STRING.split(',')
 
 ENABLE_DEBUG_TOOLBAR = os.environ.get('ENABLE_DEBUG_TOOLBAR', False) or False
 
-print("ENV: {}".format(os.environ))
 
 # Application definition
 
@@ -59,7 +58,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-print("ENABLE_DEBUG_TOOLBAR: {}".format(ENABLE_DEBUG_TOOLBAR))
+
 if ENABLE_DEBUG_TOOLBAR:
     INSTALLED_APPS += ('debug_toolbar',)
     MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
