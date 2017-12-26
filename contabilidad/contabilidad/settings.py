@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_auth',
     'rest_framework_swagger',
     'oauth2_provider',
+    'rest_framework_tracking',
     'billing',
 ]
 
