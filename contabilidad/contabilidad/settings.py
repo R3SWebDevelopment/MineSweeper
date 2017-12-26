@@ -168,3 +168,6 @@ if os.environ.get('AWS_BUCKET', False) or False:
 
     MEDIAFILES_LOCATION = 'media'
     DEFAULT_FILE_STORAGE = 'utils.storage.MediaStorage'
+
+OLD_PASSWORD_FIELD_ENABLED = True
+LOGOUT_ON_PASSWORD_CHANGE = False
