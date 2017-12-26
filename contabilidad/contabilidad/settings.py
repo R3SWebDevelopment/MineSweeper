@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'rest_framework_tracking',
     'billing',
+    'avatar',
 ]
 
 MIDDLEWARE = [
