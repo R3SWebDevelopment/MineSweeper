@@ -8,7 +8,7 @@ from django.conf import settings
 schema_view = get_swagger_view(title=_('Accounting API'))
 
 urlpatterns = [
-    url(r"^admin/", admin.site.urls),
+    url("^admin/", admin.site.urls),
     # url(r'^api-token-auth/', views.obtain_auth_token),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^$', schema_view),
