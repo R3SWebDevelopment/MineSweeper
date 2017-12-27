@@ -39,7 +39,7 @@ class Ticket(models.Model):
         else:
             self.updated_by = user
             self.log = self.log.append(build_log(user, _('Updated the ticket')))
-        super(Ticket, self).save(*args, **kwargs)
+            super(Ticket, self).save(*args, **kwargs)
 
 
 class TicketImage(models.Model):
