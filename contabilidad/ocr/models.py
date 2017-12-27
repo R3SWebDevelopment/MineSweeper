@@ -22,7 +22,7 @@ class OCRRequest(models.Model):
     image = models.ImageField(upload_to='OCR/images/')
     result = models.TextField()
     working_path = models.TextField()
-    log = ArrayField(JSONField(), null=False, default=[])
+    log = JSONField(default=list([]), null=False)
 
     def save(self, *args, **kwargs):
         user = get_current_user()
@@ -36,7 +36,7 @@ class OCRRequest(models.Model):
         else:
             self.updated_by = user
             self.log = self.log.append(build_log(user, _('Updated the OCR Request')))
-            super(OCRRequest, self).save(*args, **kwargs)
+        super(OCRRequest, self).save(*args, **kwargs)
 
     @property
     def process(self):
