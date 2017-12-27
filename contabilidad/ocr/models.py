@@ -7,6 +7,8 @@ from utils.logs import build_log
 from PIL import Image
 import pytesseract
 import argparse
+import numpy as np
+import urllib
 import cv2
 import os
 from datetime import datetime
@@ -42,7 +44,11 @@ class OCRRequest(models.Model):
     def process(self):
         self.generate_working_path
         if self.working_path is not None or self.working_path.strip() and self.image is not None:
-            image = cv2.imread(self.image.name)
+            url = self.image.url
+            resp = urllib.request.urlopen(url)
+
+            image = np.asarray(bytearray(resp.read()), dtype="uint8")
+            image = cv2.imdecode(image, cv2.IMREAD_COLOR)
             gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
             filename = "{}/{}.png".format(self.working_path , datetime.now().strftime('%Y%m%d%H%M%s'))
