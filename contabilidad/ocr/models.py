@@ -26,10 +26,13 @@ class OCRRequest(models.Model):
     working_path = models.TextField()
     log = JSONField(default=list([]), null=False)
 
-    def save(self, *args, **kwargs):
-        user = get_current_user()
+    def save(self, owner=False, *args, **kwargs):
+        if owner:
+            user = self.created_by
+        else:
+            user = get_current_user()
 
-        if user is None or not user.is_authenticated:
+        if user is None or not user.is_authenticated and not owner:
             raise ValidationError(_('Need to be log into the system to create a OCR Request'))
 
         if self.pk is None:
@@ -37,13 +40,15 @@ class OCRRequest(models.Model):
             self.log = [build_log(user, _('Created the OCR Request'))]
         else:
             self.updated_by = user
-            self.log = self.log.append(build_log(user, _('Updated the OCR Request')))
+            log = self.log + [build_log(user, _('Updated the OCR Request'))]
+            self.log = log
         super(OCRRequest, self).save(*args, **kwargs)
 
     @property
     def process(self):
         self.generate_working_path
-        if self.working_path is not None or self.working_path.strip() and self.image is not None:
+        if self.working_path is not None or os.path.exists("{}/{}".format(os.getcwd(), self.working_path)) and \
+                        self.image is not None:
             url = self.image.url
             resp = urllib.request.urlopen(url)
 
@@ -57,15 +62,17 @@ class OCRRequest(models.Model):
             try:
                 text = pytesseract.image_to_string(Image.open(filename))
                 self.result = text
-                self.log = self.log.append(build_log(user, _('Image has been processed for OCR')))
-                self.save()
-            except:
-                pass
+                log = self.log + [build_log(self.created_by, _('Image has been processed for OCR'))]
+                self.log = log
+                self.save(owner=True)
+            except Exception as e:
+                print("{}".format(e))
 
     @property
     def generate_working_path(self):
-        if self.working_path is None or len(self.working_path.strip()) == 0:
+        if self.working_path is None or not os.path.exists("{}/{}".format(os.getcwd(), self.working_path)):
             path = "{}/{}-{}".format(os.getcwd(), self.pk, datetime.now().strftime('%Y%m%d%H%M%s'))
             if not os.path.exists(path):
                 os.makedirs(path)
-            self.__class__.objects.filter(pk=self.pk).update(working_path=path)
+            self.working_path = path
+            self.save(owner=True)
