@@ -9,8 +9,8 @@ schema_view = get_swagger_view(title=_('Accounting API'))
 
 urlpatterns = [
     url("^admin/", admin.site.urls),
-    # url(r'^api-token-auth/', views.obtain_auth_token),
-    url(r'^api/', include('ocr.api.urls', namespace='ocr_api')),
+    url(r'^ocr/', include('ocr.api.urls', namespace='ocr_api')),
+    url(r'^customer/', include('customer.api.urls', namespace='customer_api')),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     url(r'^$', schema_view),

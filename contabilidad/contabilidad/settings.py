@@ -200,3 +200,11 @@ if HAS_EMAIL_SETTING_MAILGUN:
         EMAIL_HOST_PASSWORD = os.environ.get('MAILGUN_SMTP_PASSWORD', '')
         EMAIL_PORT = os.environ.get('MAILGUN_SMTP_PORT', 25)
         EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'basic': {
+            'type': 'basic'
+        }
+    },
+}
