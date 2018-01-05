@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'avatar',
     'ocr',
     'anymail',
+    'customer',
 ]
 
 MIDDLEWARE = [
@@ -188,7 +189,6 @@ HAS_EMAIL_SETTING_MAILGUN = os.environ.get('EMAIL_SETTING_MAILGUN', False)
 if HAS_EMAIL_SETTING_MAILGUN:
 
     MAILGUN_API_KEY = os.environ.get('MAILGUN_API_KEY', '')
-    print("MAILGUN_API_KEY: {}".format(MAILGUN_API_KEY))
     if MAILGUN_API_KEY:
         ANYMAIL = {
             'MAILGUN_API_KEY': MAILGUN_API_KEY,
