@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'billing',
     'avatar',
     'ocr',
+    'anymail',
 ]
 
 MIDDLEWARE = [
@@ -180,3 +181,22 @@ OLD_PASSWORD_FIELD_ENABLED = True
 LOGOUT_ON_PASSWORD_CHANGE = False
 
 SITE_ID = 1
+
+# Mail setting
+HAS_EMAIL_SETTING_MAILGUN = os.environ.get('EMAIL_SETTING_MAILGUN', False)
+
+if HAS_EMAIL_SETTING_MAILGUN:
+
+    MAILGUN_API_KEY = os.environ.get('MAILGUN_API_KEY', '')
+    print("MAILGUN_API_KEY: {}".format(MAILGUN_API_KEY))
+    if MAILGUN_API_KEY:
+        ANYMAIL = {
+            'MAILGUN_API_KEY': MAILGUN_API_KEY,
+            'MAILGUN_SENDER_DOMAIN': os.environ.get('MAILGUN_DOMAIN'),
+        }
+
+        EMAIL_HOST = os.environ.get('MAILGUN_SMTP_SERVER', 'localhost')
+        EMAIL_HOST_USER = os.environ.get('MAILGUN_SMTP_LOGIN', '')
+        EMAIL_HOST_PASSWORD = os.environ.get('MAILGUN_SMTP_PASSWORD', '')
+        EMAIL_PORT = os.environ.get('MAILGUN_SMTP_PORT', 25)
+        EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
