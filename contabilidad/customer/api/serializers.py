@@ -5,7 +5,7 @@ from utils.api.serializers import UserSerializer
 
 
 class CompanySerializer(serializers.ModelSerializer):
-    collaborators = UserSerializer(many=True)
+    collaborators = UserSerializer(many=True, read_only=True)
 
     class Meta:
         model = Company
