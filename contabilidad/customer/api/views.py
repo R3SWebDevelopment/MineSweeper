@@ -4,6 +4,7 @@ from .serializers import CompanySerializer, Company, AddCollaboratorsSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .permissions import AdminAndCollaboratorPermission
+from .filterings import CompanyFiltering, CompanyFiltering_filter_fields
 from rest_framework.permissions import IsAuthenticated
 from django.utils.translation import ugettext as _
 
@@ -13,6 +14,8 @@ class CompanyViewSet(viewsets.ModelViewSet):
     serializer_class = CompanySerializer
     http_method_names = ['get', 'post', 'patch']
     permission_classes = (AdminAndCollaboratorPermission, IsAuthenticated)
+    filter_backends = (CompanyFiltering,)
+    filter_fields = CompanyFiltering_filter_fields
 
     def get_queryset(self, *args, **kwargs):
         user = self.request.user

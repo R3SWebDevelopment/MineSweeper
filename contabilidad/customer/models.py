@@ -16,7 +16,7 @@ class Company(models.Model):
         ordering = ['rfc']
 
     def __str__(self):
-        return "{} - {}".format(self.rfc, self.name)
+        return "{} - {}".format(self.rfc, self.full_name)
 
     def __unicode__(self):
-        return u"{} - {}".format(self.rfc, self.name)
+        return u"{} - {}".format(self.rfc, self.full_name)
