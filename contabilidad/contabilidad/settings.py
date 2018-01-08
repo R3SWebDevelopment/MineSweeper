@@ -148,6 +148,10 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20
 }
 
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'users.api.serializers.RegistrationSerializer',
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
