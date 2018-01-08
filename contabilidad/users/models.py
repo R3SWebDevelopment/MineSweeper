@@ -11,3 +11,5 @@ class Profile(models.Model):
         on_delete=models.CASCADE,
         related_name='profile',
     )
+    notify_by_email = models.BooleanField(default=True)
+    notify_by_sms = models.BooleanField(default=False)
