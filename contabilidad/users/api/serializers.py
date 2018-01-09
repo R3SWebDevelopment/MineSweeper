@@ -52,44 +52,29 @@ class LogInSerializer(LoginSerializer):
         return super(LogInSerializer, self).validate(attrs)
 
 
+class ProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Profile
+        fields = ('mobile_number', 'notify_by_email', 'notify_by_sms')
+
+
+
 class UserSerializer(UserDetailsSerializer):
-    notify_by_email = serializers.SerializerMethodField()
-    notify_by_sms = serializers.SerializerMethodField()
-    mobile_country_code = serializers.SerializerMethodField()
-    mobile_number = serializers.SerializerMethodField()
+    profile = ProfileSerializer()
 
     class Meta:
         model = User
-        fields = ('pk', 'email', 'first_name', 'last_name', 'notify_by_email', 'notify_by_sms', 'mobile_country_code',
-                  'mobile_number')
+        fields = ('pk', 'email', 'first_name', 'last_name', 'profile')
         read_only_fields = ('email', )
 
-    def get_notify_by_sms(self, obj, *args, **kwargs):
+    def update(self, instance, validated_data):
+        instance = super(UserSerializer, self).update(instance, validated_data)
         try:
-            profile = obj.profile
+            profile = instance.profile
         except:
-            profile = None
-        return False if profile is None else profile.notify_by_sms
+            profile = Profile.objects.create(user=instance)
+        instance = super(UserSerializer, self).update(instance, validated_data)
+        profile = super(ProfileSerializer, profile).update(instance, validated_data)
+        return instance
 
-    def get_notify_by_email(self, obj, *args, **kwargs):
-        try:
-            profile = obj.profile
-        except:
-            profile = None
-        return False if profile is None else profile.notify_by_email
-
-    def get_mobile_country_code(self, obj, *args, **kwargs):
-        try:
-            profile = obj.profile
-        except:
-            profile = None
-        return '' if profile is None and profile.mobile_number is None \
-            else profile.mobile_number.get('country_code', '')
-
-    def get_mobile_number(self, obj, *args, **kwargs):
-        try:
-            profile = obj.profile
-        except:
-            profile = None
-        return '' if profile is None and profile.mobile_number is None \
-            else profile.mobile_number.get('mobile_number', '')
