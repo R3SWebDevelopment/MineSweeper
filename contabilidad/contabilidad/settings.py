@@ -156,8 +156,13 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20
 }
 
+
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+REST_AUTH_SERIALIZERS = {
+    'LOGIN_SERIALIZER': 'users.api.serializers.LogInSerializer',
+}
 
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'users.api.serializers.RegistrationSerializer',

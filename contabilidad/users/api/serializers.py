@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from rest_auth.registration.serializers import RegisterSerializer
+from rest_auth.serializers import LoginSerializer
 from django.contrib.auth.models import User
 from users.models import Profile
 
@@ -24,6 +25,9 @@ class RegistrationSerializer(RegisterSerializer):
         }
         profile = Profile.objects.create(user=user, mobile_number=mobile_number, notify_by_email=True,
                                          notify_by_sms=True)
+        user.first_name = cleaned_data.get('first_name', '')
+        user.last_name = cleaned_data.get('last_name', '')
+        user.save()
         return user
 
     def get_cleaned_data(self):
@@ -36,3 +40,13 @@ class RegistrationSerializer(RegisterSerializer):
             "mobile_number": self.validated_data.get('mobile_number', ''),
         })
         return cleaned_data
+
+
+class LogInSerializer(LoginSerializer):
+    username = serializers.HiddenField(default="")
+
+    def validate(self, attrs):
+        attrs.update({
+            'username': attrs.get('email', ''),
+        })
+        return super(LogInSerializer, self).validate(attrs)
