@@ -245,3 +245,4 @@ AVATAR_PROVIDERS = (
     'avatar.providers.DefaultAvatarProvider',
 )
 AVATAR_AUTO_GENERATE_SIZES = (180, 160, 128, 96, 40, 32, 24, 16)
+AVATAR_DEFAULT_SIZE = 128

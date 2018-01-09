@@ -3,6 +3,7 @@ from rest_auth.registration.serializers import RegisterSerializer
 from rest_auth.serializers import LoginSerializer, UserDetailsSerializer
 from django.contrib.auth.models import User
 from users.models import Profile
+from avatar.models import Avatar
 
 
 class RegistrationSerializer(RegisterSerializer):
@@ -60,16 +61,31 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ('mobile_number', 'notify_by_email', 'notify_by_sms')
 
 
+class AvatarSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Avatar
+        fields = ('url', )
+
+    def get_url(self, obj):
+        return obj.get_absolute_url()
+
+
 class UserSerializer(UserDetailsSerializer):
-    profile = ProfileSerializer()
+    profile = ProfileSerializer(required=False)
+    avatars = AvatarSerializer(many=True, read_only=True, source='avatar_set')
+    avatar = serializers.FileField(required=True, write_only=True)
 
     class Meta:
         model = User
-        fields = ('pk', 'email', 'first_name', 'last_name', 'profile')
+        fields = ('pk', 'email', 'first_name', 'last_name', 'profile', 'avatars', 'avatar')
         read_only_fields = ('email', )
 
     def update(self, instance, validated_data):
         profile_validated_data = validated_data.pop('profile', {})
+        avatar_image = validated_data.get('avatar', None)
+
         instance = super(UserSerializer, self).update(instance, validated_data)
         try:
             profile = instance.profile
@@ -78,5 +94,11 @@ class UserSerializer(UserDetailsSerializer):
         profile_serializer = ProfileSerializer(instance=profile, data=profile_validated_data)
         if profile_serializer.is_valid(raise_exception=False):
             profile_serializer.save()
+
+        if avatar_image:
+            avatar = Avatar(user=instance, primary=True)
+            avatar.avatar.save(avatar_image.name, avatar_image)
+            avatar.save()
+
         return instance
 
