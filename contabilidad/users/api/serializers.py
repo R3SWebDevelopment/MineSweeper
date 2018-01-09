@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_auth.registration.serializers import RegisterSerializer
-from rest_auth.serializers import LoginSerializer
+from rest_auth.serializers import LoginSerializer, UserDetailsSerializer
 from django.contrib.auth.models import User
 from users.models import Profile
 
@@ -50,3 +50,46 @@ class LogInSerializer(LoginSerializer):
             'username': attrs.get('email', ''),
         })
         return super(LogInSerializer, self).validate(attrs)
+
+
+class UserSerializer(UserDetailsSerializer):
+    notify_by_email = serializers.SerializerMethodField()
+    notify_by_sms = serializers.SerializerMethodField()
+    mobile_country_code = serializers.SerializerMethodField()
+    mobile_number = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ('pk', 'email', 'first_name', 'last_name', 'notify_by_email', 'notify_by_sms', 'mobile_country_code',
+                  'mobile_number')
+        read_only_fields = ('email', )
+
+    def get_notify_by_sms(self, obj, *args, **kwargs):
+        try:
+            profile = obj.profile
+        except:
+            profile = None
+        return False if profile is None else profile.notify_by_sms
+
+    def get_notify_by_email(self, obj, *args, **kwargs):
+        try:
+            profile = obj.profile
+        except:
+            profile = None
+        return False if profile is None else profile.notify_by_email
+
+    def get_mobile_country_code(self, obj, *args, **kwargs):
+        try:
+            profile = obj.profile
+        except:
+            profile = None
+        return '' if profile is None and profile.mobile_number is None \
+            else profile.mobile_number.get('country_code', '')
+
+    def get_mobile_number(self, obj, *args, **kwargs):
+        try:
+            profile = obj.profile
+        except:
+            profile = None
+        return '' if profile is None and profile.mobile_number is None \
+            else profile.mobile_number.get('mobile_number', '')

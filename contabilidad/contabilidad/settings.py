@@ -165,6 +165,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'users.api.serializers.LogInSerializer',
+    'USER_DETAILS_SERIALIZER': 'users.api.serializers.UserSerializer',
 }
 
 REST_AUTH_REGISTER_SERIALIZERS = {
