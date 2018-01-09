@@ -237,3 +237,11 @@ SWAGGER_SETTINGS = {
         }
     },
 }
+
+
+AVATAR_PROVIDERS = (
+    'avatar.providers.PrimaryAvatarProvider',
+    'avatar.providers.GravatarAvatarProvider',
+    'avatar.providers.DefaultAvatarProvider',
+)
+AVATAR_AUTO_GENERATE_SIZES = (180, 160, 128, 96, 40, 32, 24, 16)
