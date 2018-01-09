@@ -119,6 +119,9 @@
                 }
             }
 
+            {% block STYLE %}
+            {% endblock %}
+
         </style>
         <!-- CSS Reset : END -->
 
@@ -214,5 +217,10 @@
             {% include 'email/snippet/full_blend_background.html' %}
 
         </center>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script>
+    {% block SCRIPT %}
+    {% endblock %}
+        </script>
     </body>
 </html>
