@@ -53,11 +53,11 @@ class LogInSerializer(LoginSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    mobile_number = serializers.JSONField(default={'number': '', 'country_code': ''})
 
     class Meta:
         model = Profile
         fields = ('mobile_number', 'notify_by_email', 'notify_by_sms')
-
 
 
 class UserSerializer(UserDetailsSerializer):
@@ -69,12 +69,14 @@ class UserSerializer(UserDetailsSerializer):
         read_only_fields = ('email', )
 
     def update(self, instance, validated_data):
+        profile_validated_data = validated_data.pop('profile', {})
         instance = super(UserSerializer, self).update(instance, validated_data)
         try:
             profile = instance.profile
         except:
             profile = Profile.objects.create(user=instance)
-        instance = super(UserSerializer, self).update(instance, validated_data)
-        profile = super(ProfileSerializer, profile).update(instance, validated_data)
+        profile_serializer = ProfileSerializer(instance=profile, data=profile_validated_data)
+        if profile_serializer.is_valid(raise_exception=False):
+            profile_serializer.save()
         return instance
 
