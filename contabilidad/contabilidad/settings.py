@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ALLOWED_HOSTS_STRING.split(',')
 
 ENABLE_DEBUG_TOOLBAR = os.environ.get('ENABLE_DEBUG_TOOLBAR', False) or False
 
+
 DJANGO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(DJANGO_ROOT)
 
@@ -83,10 +84,18 @@ MIDDLEWARE += ('crum.CurrentRequestUserMiddleware',)  # CRUM middleware
 
 ROOT_URLCONF = 'contabilidad.urls'
 
+TEMPLATES_ROOT = os.path.join(PROJECT_ROOT, 'contabilidad/templates')
+
+PROJECT_TEMPLATES = [
+    TEMPLATES_ROOT,
+]
+
+print("TEMPLATES_ROOT: {}".format(PROJECT_TEMPLATES))
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': PROJECT_TEMPLATES,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -115,25 +124,6 @@ DATABASES = {
         'PORT': os.environ.get('DATABASE_PORT', 5432) or 5432,
     }
 }
-
-TEMPLATES_ROOT = os.path.join(PROJECT_ROOT, 'templates')
-
-PROJECT_TEMPLATES = [
-    TEMPLATES_ROOT,
-]
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': PROJECT_TEMPLATES,
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.contrib.auth.context_processors.auth',
-            ],
-        },
-    },
-]
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
