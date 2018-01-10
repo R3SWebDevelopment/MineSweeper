@@ -75,7 +75,7 @@ class AvatarSerializer(serializers.ModelSerializer):
 class UserSerializer(UserDetailsSerializer):
     profile = ProfileSerializer(required=False)
     avatars = AvatarSerializer(many=True, read_only=True, source='avatar_set')
-    avatar = serializers.FileField(required=True, write_only=True)
+    avatar = serializers.FileField(required=False, write_only=True)
 
     class Meta:
         model = User
