@@ -45,6 +45,12 @@ class Notification(models.Model):
     sms_response = JSONField()
     sms_error = models.TextField()
 
+    process_begins = models.DateTimeField(null=True)
+    process_began = models.BooleanField(default=False)
+
+    process_ends = models.DateTimeField(null=True)
+    process_end = models.BooleanField(default=False)
+
     @classmethod
     def notify(cls, users, email_subject, email_message, sms_subject, sms_message, sms_override=False,
                email_override=False):
@@ -68,8 +74,12 @@ class Notification(models.Model):
         if len(numbers) > 0 or len(mails) > 0:
             send_mail = len(mails) > 0
             send_sms = len(numbers) > 0
-            cls.objects.create(email=send_mail, sms=send_sms, email_subject=email_subject, email_message=email_message,
-                               sms_subject=sms_subject, sms_message=sms_message)
+            notification = cls.objects.create(email=send_mail, sms=send_sms, email_subject=email_subject,
+                                              email_message=email_message, sms_subject=sms_subject,
+                                              sms_message=sms_message)
+            notification.email_address = mails
+            notification.mobile_number = numbers
+            notification.save()
 
     def _send_email(self):
         pass
