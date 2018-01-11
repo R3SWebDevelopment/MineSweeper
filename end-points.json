@@ -6,7 +6,16 @@
     "param": {
       "username": "string",
       "first_name": "string",
-      "last_name": "string"
+      "last_name": "string",
+      "profile": {
+              "notify_by_email": true,
+              "notify_by_sms": true,
+               "mobile_number": {
+                      "number": "8110713920",
+                      "country_code": "+52"
+               }
+      },
+      "avatar": "FILE"
     }
   },
   "user_registration": {
