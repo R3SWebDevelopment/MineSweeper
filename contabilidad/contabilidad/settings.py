@@ -216,6 +216,8 @@ SITE_ID = 1
 # Mail setting
 HAS_EMAIL_SETTING_MAILGUN = os.environ.get('EMAIL_SETTING_MAILGUN', False)
 
+EMAIL_HOST_USER = 'contableapp@r3s.com.mx'
+
 if HAS_EMAIL_SETTING_MAILGUN:
 
     MAILGUN_API_KEY = os.environ.get('MAILGUN_API_KEY', '')

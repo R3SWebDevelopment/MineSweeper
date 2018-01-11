@@ -1,12 +1,16 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField, JSONField
 import boto3
+from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from datetime.datetime import now
 
 SNS_ENABLED = settings.SNS_ENABLED or False
 SNS_ACCESS_KEY = settings.SNS_ACCESS_KEY or None
 SNS_SECRET_ACCESS_KEY = settings.SNS_SECRET_ACCESS_KEY or None
 SNS_REGION_NAME = settings.SNS_REGION_NAME or None
+
+FROM_EMAIL_ADDRESS = settings.EMAIL_HOST_USER
 
 
 def is_sms_enable():
@@ -81,17 +85,64 @@ class Notification(models.Model):
             notification.mobile_number = numbers
             notification.save()
 
+    def send(self):
+        self.process_begins = True
+        self.process_began = now()
+        self.save()
+
+        self._send_email()
+        self._send_sms()
+
+        self.process_ends = True
+        self.process_end = now()
+        self.save()
+
     def _send_email(self):
-        pass
+        if self.email:
+            emails = self.email_address
+            if len(emails) > 0:
+                email_send = self.email_send or {}
+                email_has_error = self.email_has_error or {}
+                email_error = self.email_error or {}
+                email_response = self.email_response or {}
+
+                message = self.email_message
+                subject = self.email_subject
+
+                from_email = FROM_EMAIL_ADDRESS
+                text_content = ''
+                html_content = message
+                msg = EmailMultiAlternatives(subject, text_content, from_email, emails)
+                msg.attach_alternative(html_content, "text/html")
+                error = False
+                error_msg = ""
+                response = ""
+                try:
+                    msg.send()
+                    email_send = {email: True for email in emails}
+                    email_response = {email: "" for email in emails}
+                except Exception as e:
+                    error = True
+                    error_msg = "{}".format(e)
+                    email_send = {email: False for email in emails}
+                    email_has_error = {email: True for email in emails}
+                    email_error = {email: error_msg for email in emails}
+
+                self.email_send = email_send
+                self.email_has_error = email_has_error
+                self.email_error = email_error
+                self.email_response = email_response
+                self.save()
 
     def _send_sms(self):
         if self.sms:
             numbers = self.mobile_number
-            sms_send = self.sms_send or {}
-            sms_has_error = self.sms_has_error or {}
-            sms_error = self.sms_error or {}
-            sms_response = self.sms_response or {}
             if len(numbers) > 0:
+                sms_send = self.sms_send or {}
+                sms_has_error = self.sms_has_error or {}
+                sms_error = self.sms_error or {}
+                sms_response = self.sms_response or {}
+
                 aws_access_key_id = SNS_ACCESS_KEY
                 aws_secret_access_key = SNS_SECRET_ACCESS_KEY
                 region_name = SNS_ACCESS_KEY
@@ -108,6 +159,7 @@ class Notification(models.Model):
                         error = True
                         error_msg = "{}".format(e)
                         response = ""
+
                     sms_send.update({
                         number: not error
                     })
@@ -122,9 +174,10 @@ class Notification(models.Model):
                         sms_response.update({
                             number: response
                         })
-            self.sms_send = sms_send
-            self.sms_has_error = sms_has_error
-            self.sms_error = sms_error
-            self.sms_response = sms_response
-            self.save()
+
+                self.sms_send = sms_send
+                self.sms_has_error = sms_has_error
+                self.sms_error = sms_error
+                self.sms_response = sms_response
+                self.save()
 
