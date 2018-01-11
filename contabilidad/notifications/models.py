@@ -3,7 +3,7 @@ from django.contrib.postgres.fields import ArrayField, JSONField
 import boto3
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
-from datetime.datetime import now
+from datetime import datetime
 
 SNS_ENABLED = settings.SNS_ENABLED or False
 SNS_ACCESS_KEY = settings.SNS_ACCESS_KEY or None
@@ -87,14 +87,14 @@ class Notification(models.Model):
 
     def send(self):
         self.process_begins = True
-        self.process_began = now()
+        self.process_began = datetime.now()
         self.save()
 
         self._send_email()
         self._send_sms()
 
         self.process_ends = True
-        self.process_end = now()
+        self.process_end = datetime.now()
         self.save()
 
     def _send_email(self):
