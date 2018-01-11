@@ -85,14 +85,46 @@ class Notification(models.Model):
         pass
 
     def _send_sms(self):
-        try:
-            aws_access_key_id = None
-            aws_secret_access_key = None
-            region_name = None
+        if self.sms:
+            numbers = self.mobile_number
+            sms_send = self.sms_send or {}
+            sms_has_error = self.sms_has_error or {}
+            sms_error = self.sms_error or {}
+            sms_response = self.sms_response or {}
+            if len(numbers) > 0:
+                aws_access_key_id = SNS_ACCESS_KEY
+                aws_secret_access_key = SNS_SECRET_ACCESS_KEY
+                region_name = SNS_ACCESS_KEY
+                client = boto3.client('sns', aws_access_key_id=aws_access_key_id,
+                                      aws_secret_access_key=aws_secret_access_key, region_name=region_name)
+                message = self.sms_message
+                subject = self.sms_subject
+                for number in numbers:
+                    error = False
+                    error_msg = ""
+                    try:
+                        response = client.publish(PhoneNumber=number, Message=message, Subject=subject)
+                    except Exception as e:
+                        error = True
+                        error_msg = "{}".format(e)
+                        response = ""
+                    sms_send.update({
+                        number: not error
+                    })
+                    if error:
+                        sms_has_error.update({
+                            number: True
+                        })
+                        sms_error.update({
+                            number: error_msg
+                        })
+                    else:
+                        sms_response.update({
+                            number: response
+                        })
+            self.sms_send = sms_send
+            self.sms_has_error = sms_has_error
+            self.sms_error = sms_error
+            self.sms_response = sms_response
+            self.save()
 
-            client = boto3.client('sns', aws_access_key_id=aws_access_key_id,
-                                  aws_secret_access_key=aws_secret_access_key, region_name=region_name)
-
-            response = client.publish(PhoneNumber='+528110713920', Message='Testing TEXT', Subject='OTRA')
-        except Exception as e:
-            pass
