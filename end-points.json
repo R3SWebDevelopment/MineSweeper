@@ -75,8 +75,9 @@
       "new_password1": "string",
       "new_password2": "string"
     }
+  },
+  "health_check": {
+    "url": "/system/health_check/",
+    "method": ["GET"]
   }
-
-
-
 }
