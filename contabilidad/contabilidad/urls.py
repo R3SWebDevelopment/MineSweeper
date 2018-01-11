@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^customer/', include('customer.api.urls', namespace='customer_api')),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
+    url(r'^system/', include('utils.api.urls', namespace='system_api')),
     url(r'^$', schema_view),
     url(r'^avatar/', include('avatar.urls')),
 ]
