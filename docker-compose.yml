@@ -5,7 +5,7 @@ services:
     image: postgres
   web:
     build: .
-    env_file: .env
+    env_file: docker/local/.env
     command: python3 contabilidad/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
