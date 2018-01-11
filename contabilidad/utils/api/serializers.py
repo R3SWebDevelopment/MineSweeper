@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.conf import settings
+import pytz
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,4 +23,4 @@ class HealthCheckSerializer(serializers.Serializer):
         return "test"
 
     def get_timestamp(self, obj):
-        return datetime.now()
+        return datetime.now(pytz.timezone(settings.TIME_ZONE)).strftime("%Y-%m-%dT%H:%M:%S%Z")
