@@ -50,14 +50,14 @@
     "url": "/rest-auth/logout/",
     "method": ["POST"]
   },
-  "user_password_reset": {
+  "password_reset_request": {
     "url": "/rest-auth/password/reset/",
     "method": ["POST"],
     "param": {
       "email": "string"
     }
   },
-  "user_password_reset_confirm": {
+  "password_reset_confirm": {
     "url": "/rest-auth/password/reset/confirm/",
     "method": ["POST"],
     "param": {
@@ -67,7 +67,7 @@
       "token": "string"
     }
   },
-  "user_password_reset": {
+  "user_password_change": {
     "url": "/rest-auth/password/change/",
     "method": ["POST"],
     "param": {
