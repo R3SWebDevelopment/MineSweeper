@@ -5,7 +5,7 @@ from django.conf import settings
 
 
 class Profile(models.Model):
-    mobile_number = JSONField()
+    mobile_number = JSONField(default={})
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
