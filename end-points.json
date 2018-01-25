@@ -4,7 +4,7 @@
     "method": ["GET", "PATCH", "PUT"],
     "token_required": true,
     "param": {
-      "username": "string",
+      "email": "string",
       "first_name": "string",
       "last_name": "string",
       "profile": {
