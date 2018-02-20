@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'rest_auth',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
     'rest_auth.registration',
     'rest_framework_swagger',
     'oauth2_provider',
@@ -256,3 +258,31 @@ SNS_ENABLED = os.environ.get('SNS_ENABLED', False)
 SNS_ACCESS_KEY = os.environ.get('SNS_ACCESS_KEY', None)
 SNS_SECRET_ACCESS_KEY = os.environ.get('SNS_SECRET_ACCESS_KEY', None)
 SNS_REGION_NAME = os.environ.get('SNS_REGION_NAME', None)
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile', 'user_friends', 'user_birthday', 'user_location',
+                  'user_relationship_details', 'user_location', ],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time',
+        ],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': lambda request: 'es_MX',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v2.5',
+    }
+}
