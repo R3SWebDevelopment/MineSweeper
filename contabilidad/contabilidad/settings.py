@@ -286,3 +286,8 @@ SOCIALACCOUNT_PROVIDERS = {
         'VERSION': 'v2.5',
     }
 }
+
+FACEBOOK_APP_ID="409449702843935"
+FACEBOOK_APP_SECRET="b0d3e7eaa10709f1c63f56a0bdb08967"
+FACEBOOK_DEFAULT_SCOPE=['email', 'public_profile', 'user_friends', 'user_birthday', 'user_location',
+                        'user_relationship_details', 'user_location', ]
