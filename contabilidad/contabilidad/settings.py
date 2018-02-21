@@ -266,3 +266,30 @@ FACEBOOK_APP_ID="409449702843935"
 FACEBOOK_APP_SECRET="b0d3e7eaa10709f1c63f56a0bdb08967"
 FACEBOOK_DEFAULT_SCOPE=['email', 'public_profile', 'user_friends', 'user_birthday', 'user_location',
                         'user_relationship_details', 'user_location', ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile', 'user_friends', 'user_birthday', 'user_location',
+                  'user_relationship_details', 'user_location',],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time',
+        ],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': lambda request: 'es_MX',
+        'VERIFIED_EMAIL': True,
+        'VERSION': 'v2.5',
+    }
+}
