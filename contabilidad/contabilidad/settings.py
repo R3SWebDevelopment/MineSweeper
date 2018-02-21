@@ -152,6 +152,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
 
@@ -163,6 +164,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20
 }
 
+REST_USE_JWT = True
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
@@ -259,33 +261,6 @@ SNS_ACCESS_KEY = os.environ.get('SNS_ACCESS_KEY', None)
 SNS_SECRET_ACCESS_KEY = os.environ.get('SNS_SECRET_ACCESS_KEY', None)
 SNS_REGION_NAME = os.environ.get('SNS_REGION_NAME', None)
 
-
-SOCIALACCOUNT_PROVIDERS = {
-    'facebook': {
-        'METHOD': 'oauth2',
-        'SCOPE': ['email', 'public_profile', 'user_friends', 'user_birthday', 'user_location',
-                  'user_relationship_details', 'user_location', ],
-        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
-        'INIT_PARAMS': {'cookie': True},
-        'FIELDS': [
-            'id',
-            'email',
-            'name',
-            'first_name',
-            'last_name',
-            'verified',
-            'locale',
-            'timezone',
-            'link',
-            'gender',
-            'updated_time',
-        ],
-        'EXCHANGE_TOKEN': True,
-        'LOCALE_FUNC': lambda request: 'es_MX',
-        'VERIFIED_EMAIL': False,
-        'VERSION': 'v2.5',
-    }
-}
 
 FACEBOOK_APP_ID="409449702843935"
 FACEBOOK_APP_SECRET="b0d3e7eaa10709f1c63f56a0bdb08967"
