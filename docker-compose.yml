@@ -18,3 +18,10 @@ services:
     depends_on:
       - db
       - redis
+  celery:
+    build: .
+    env_file: docker/local/.env
+    command: celery worker --app=contabilidad.contabilidad.celery.app -B
+    links:
+      - db
+      - redis
