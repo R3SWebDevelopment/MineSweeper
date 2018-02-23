@@ -1,7 +1,40 @@
 from django.db import models
 from crum import get_current_user
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext as _
+from datetime import datetime
+from celery import uuid
 
+PROCESS_STATUS_NULL = 0
+PROCESS_STATUS_QUEUED = 1
+PROCESS_STATUS_CANCELED = 2
+PROCESS_STATUS_PROGRESS = 3
+PROCESS_STATUS_COMPLETED = 4
+PROCESS_STATUS_ERROR = 5
+
+##
+##                         |---------------------------|
+##                         |  |-----------|            ^
+##                         |  |           ^            |
+##                         |  |           |            |
+##                         |  |         ERROR          |
+##                         |  |           ^            |
+##                         V  V           |            |
+## PROCESS FLOW  NULL --> QUEUED --> PROGRESS --> COMPLETED
+##                         ^  V            |
+##                         |  |            V
+##                         |  |-------->CANCELED
+##                         |                 v
+##                         |-----------------|
+
+PROCESS_STATUS = (
+    (PROCESS_STATUS_NULL, _('NULL')),
+    (PROCESS_STATUS_QUEUED, _('QUEUED')),
+    (PROCESS_STATUS_CANCELED, _('CANCELED')),
+    (PROCESS_STATUS_PROGRESS, _('PROGRESS')),
+    (PROCESS_STATUS_COMPLETED, _('COMPLETED')),
+    (PROCESS_STATUS_ERROR, _('ERROR')),
+)
 
 def get_current_user_or_none():
     current_user = get_current_user()
@@ -27,3 +60,55 @@ class OwnerModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class CeleryProcessable(models.Model):
+    process_id = models.UUIDField(null=True)
+    process_status = models.IntegerField(null=False, choices=PROCESS_STATUS, default=PROCESS_STATUS_NULL)
+    process_started_at = models.DateTimeField(null=True)
+    process_updated_at = models.DateTimeField(null=True)
+    process_has_error = models.NullBooleanField(default=None)
+
+    @classmethod
+    def get_process_method(cls):
+        raise Exception(_('Need to define process script'))
+
+    def process_start(self):
+        if self.process_status in [PROCESS_STATUS_NULL, PROCESS_STATUS_COMPLETED, PROCESS_STATUS_ERROR,
+                                   PROCESS_STATUS_CANCELED]:
+            process_method = CeleryProcessable.get_process_method()
+            task_id = uuid()
+            self.process_status = PROCESS_STATUS_QUEUED
+            self.process_started_at = datetime.now()
+            self.process_updated_at = None
+            self.process_id = task_id
+            self.process_has_error = None
+            self.save()
+            process_method.apply_async(id=self.id, task_id=task_id)
+        else:
+            raise Exception(_("This action is not allowed"))
+
+    def set_process_status(self, status=None):
+        if status is not None:
+            if status == PROCESS_STATUS_NULL:
+                raise Exception(_('This status is not allowed'))
+            if status == PROCESS_STATUS_QUEUED:
+                self.process_start()
+                return
+            if status == PROCESS_STATUS_PROGRESS:
+                if self.process_status not in [PROCESS_STATUS_QUEUED]:
+                    raise Exception(_('This status is not allowed'))
+            if status == PROCESS_STATUS_CANCELED:
+                if self.process_status not in [PROCESS_STATUS_QUEUED, PROCESS_STATUS_PROGRESS]:
+                    raise Exception(_('This status is not allowed'))
+            if status == PROCESS_STATUS_ERROR:
+                if self.process_status not in [PROCESS_STATUS_ERROR]:
+                    raise Exception(_('This status is not allowed'))
+            if status == PROCESS_STATUS_COMPLETED:
+                if self.process_status not in [PROCESS_STATUS_PROGRESS]:
+                    raise Exception(_('This status is not allowed'))
+            self.process_status = status
+            self.process_updated_at = datetime.now()
+            self.save()
+        else:
+            raise ValueError(_('No Status parameter provided'))
