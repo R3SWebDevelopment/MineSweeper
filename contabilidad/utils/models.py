@@ -68,6 +68,7 @@ class CeleryProcessable(models.Model):
     process_started_at = models.DateTimeField(null=True)
     process_updated_at = models.DateTimeField(null=True)
     process_has_error = models.NullBooleanField(default=None)
+    process_error_msg = models.TextField(null=True)
 
     @classmethod
     def get_process_method(cls):
@@ -82,11 +83,17 @@ class CeleryProcessable(models.Model):
             self.process_started_at = datetime.now()
             self.process_updated_at = None
             self.process_id = task_id
-            self.process_has_error = None
+            self.set_process_error_msg()
             self.save()
             process_method.apply_async(id=self.id, task_id=task_id)
         else:
             raise Exception(_("This action is not allowed"))
+
+    def set_process_error_msg(self, msg=None):
+        self.process_error_msg = msg
+        self.process_has_error = None if msg is None else True
+        if self.process_has_error:
+            self.set_process_status(status=PROCESS_STATUS_ERROR)
 
     def set_process_status(self, status=None):
         if status is not None:
@@ -102,7 +109,7 @@ class CeleryProcessable(models.Model):
                 if self.process_status not in [PROCESS_STATUS_QUEUED, PROCESS_STATUS_PROGRESS]:
                     raise Exception(_('This status is not allowed'))
             if status == PROCESS_STATUS_ERROR:
-                if self.process_status not in [PROCESS_STATUS_ERROR]:
+                if self.process_status not in [PROCESS_STATUS_PROGRESS]:
                     raise Exception(_('This status is not allowed'))
             if status == PROCESS_STATUS_COMPLETED:
                 if self.process_status not in [PROCESS_STATUS_PROGRESS]:
