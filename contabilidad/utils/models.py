@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import JSONField, ArrayField
 from crum import get_current_user
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
@@ -69,6 +70,7 @@ class CeleryProcessable(models.Model):
     process_updated_at = models.DateTimeField(null=True)
     process_has_error = models.NullBooleanField(default=None)
     process_error_msg = models.TextField(null=True)
+    process_log = ArrayField(JSONField())
 
     @classmethod
     def get_process_method(cls):
@@ -84,10 +86,19 @@ class CeleryProcessable(models.Model):
             self.process_updated_at = None
             self.process_id = task_id
             self.set_process_error_msg()
+            self.add_process_log(msg="The process its been set on queue to be processed", start=True)
             self.save()
             process_method.apply_async(id=self.id, task_id=task_id)
         else:
             raise Exception(_("This action is not allowed"))
+
+    def add_process_log(self, msg=None, start=False):
+        if msg and msg.strip():
+            log = [] if start else self.process_log or []
+            log.append({
+                "timestamp": datetime.now(),
+                "msg": msg
+            })
 
     def set_process_error_msg(self, msg=None):
         self.process_error_msg = msg
@@ -105,15 +116,19 @@ class CeleryProcessable(models.Model):
             if status == PROCESS_STATUS_PROGRESS:
                 if self.process_status not in [PROCESS_STATUS_QUEUED]:
                     raise Exception(_('This status is not allowed'))
+                self.add_process_log(msg="The process has been started")
             if status == PROCESS_STATUS_CANCELED:
                 if self.process_status not in [PROCESS_STATUS_QUEUED, PROCESS_STATUS_PROGRESS]:
                     raise Exception(_('This status is not allowed'))
+                self.add_process_log(msg="The process has been canceled")
             if status == PROCESS_STATUS_ERROR:
                 if self.process_status not in [PROCESS_STATUS_PROGRESS]:
                     raise Exception(_('This status is not allowed'))
+                self.add_process_log(msg="The process has been stopped cause an error")
             if status == PROCESS_STATUS_COMPLETED:
                 if self.process_status not in [PROCESS_STATUS_PROGRESS]:
                     raise Exception(_('This status is not allowed'))
+                self.add_process_log(msg="The process has been completed")
             self.process_status = status
             self.process_updated_at = datetime.now()
             self.save()
