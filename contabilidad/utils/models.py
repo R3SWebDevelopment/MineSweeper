@@ -76,6 +76,9 @@ class CeleryProcessable(models.Model):
     process_error_msg = models.TextField(null=True)
     process_log = ArrayField(JSONField())
 
+    class Meta:
+        abstract = True
+
     @classmethod
     def get_process_method(cls):
         raise Exception(_('Need to define process script'))
