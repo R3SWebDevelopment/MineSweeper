@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from datetime import datetime
 from celery import uuid
+import os
+import random
 
 PROCESS_STATUS_NULL = 0
 PROCESS_STATUS_QUEUED = 1
@@ -134,3 +136,80 @@ class CeleryProcessable(models.Model):
             self.save()
         else:
             raise ValueError(_('No Status parameter provided'))
+
+
+def generate_upload_folder_path(instance, filename):
+    app = "{}".format(instance.__class__._meta.app_label)
+    model = "{}".format(instance.__class__.__name__)
+    prefix = instance.upload_folder_prefix or "compress_file"
+    return "{app}/{model}/{prefix}/{filename}".format(**{
+        "app": app,
+        "model": model,
+        "prefix": prefix,
+        "filename": filename,
+    }).lower()
+
+
+def generate_decompress_path(instance):
+    app = "{}".format(instance.__class__._meta.app_label)
+    model = "{}".format(instance.__class__.__name__)
+    prefix = instance.upload_folder_prefix or "compress_file"
+    id = "{}".format(random.randint(1,100))
+    postfix = "{}{}".format("0"*(3-len(id)), id)
+    dir_name = "{}_{}".format(datetime.now().strftime("%Y%m%d%H%M%S"), postfix)
+    return "{app}/{model}/{prefix}/{dir}/".format(**{
+        "app": app,
+        "model": model,
+        "prefix": prefix,
+        "dir": dir_name,
+    }).lower()
+
+
+def build_decompress_path(path):
+    base_path = os.getcwd()
+    folder_path = "{}/{}".format(base_path, path)
+    if not os.path.exists(folder_path):
+        try:
+            os.mkdir(folder_path)
+            return True
+        except:
+            pass
+    return False
+
+
+class CompressFileUpload(models.Model):
+    upload = models.FileField(upload_to=generate_upload_folder_path)
+    uncompress_path = models.CharField(max_length=250, null=True)
+
+    upload_folder_prefix = None  # Set this attr on the child model class to define a prefix fot the upload folder path
+    exclude_extensions = []  # Set this attr to exclude certain file extension when decompressing the files
+    filter_extensions = []  # Set this attr to filter certain file extension when decompressing the files
+
+    def set_environment(self):
+        if not self.uncompress_path_exists():
+            self.set_uncompress_path()
+
+
+    def set_uncompress_path(self):
+        break_counter = 100
+        while True:
+            uncompress_path = generate_decompress_path(self)
+            if build_decompress_path(uncompress_path):
+                self.uncompress_path = uncompress_path
+                self.save()
+                return
+            if break_counter == 0:
+                raise Exception(_("Couldn't create uncompress path"))
+            break_counter -= 1
+
+
+
+    def uncompress_path_exists(self):
+        if self.uncompress_path and self.uncompress_path.strip():
+            if os.path.exists(self.uncompress_path) and os.path.isdir(self.uncompress_path):
+                return True
+        return False
+
+
+    class Meta:
+        abstract = True
