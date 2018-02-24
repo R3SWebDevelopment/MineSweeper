@@ -1,7 +1,6 @@
 from django.conf import settings
 import os
 import zipfile
-log = settings.LOG
 
 
 def unzip(zip_path, working_path):
