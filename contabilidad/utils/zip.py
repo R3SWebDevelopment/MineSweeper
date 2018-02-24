@@ -19,11 +19,7 @@ def get_files(path):
 def get_folder_name(path):
     exclude = ['__MACOSX']
     file_name = ""
-    log.debug("searching in %s", path)
     if os.path.exists(path):
         folders = [name for name in os.listdir(path) if name not in exclude]
-        # print("FOLDERS: {}".format(folders))
         file_name = folders[0] if len(folders) > 0 else ""
-        log.debug("file name %s", file_name)
-        # print("FILE NAME: {}".format(file_name))
     return "{}/{}".format(path, file_name)

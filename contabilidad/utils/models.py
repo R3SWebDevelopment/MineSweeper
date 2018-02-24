@@ -5,8 +5,10 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from datetime import datetime
 from celery import uuid
+from utils.zip import unzip
 import os
 import random
+import shutil
 
 PROCESS_STATUS_NULL = 0
 PROCESS_STATUS_QUEUED = 1
@@ -180,6 +182,10 @@ def build_decompress_path(path):
 class CompressFileUpload(models.Model):
     upload = models.FileField(upload_to=generate_upload_folder_path)
     uncompress_path = models.CharField(max_length=250, null=True)
+    listed_files = ArrayField(
+        models.CharField(max_length=250, blank=False),
+        null=True
+    )
 
     upload_folder_prefix = None  # Set this attr on the child model class to define a prefix fot the upload folder path
     exclude_extensions = []  # Set this attr to exclude certain file extension when decompressing the files
@@ -188,6 +194,44 @@ class CompressFileUpload(models.Model):
     def set_environment(self):
         if not self.uncompress_path_exists():
             self.set_uncompress_path()
+
+    def get_uncompress_path(self):
+        base_path = os.getcwd()
+        working_path = "{}/{}".format(base_path, self.uncompress_path)
+        return working_path
+
+    def clear_environment(self):
+        path = self.get_uncompress_path()
+        if os.path.exists(path):
+            shutil.rmtree(path)
+
+    def extract_files(self):
+        unzip(self.upload.file, self.get_uncompress_path())
+
+
+    def list_uncompressed_files(self):
+        base_path = self.get_uncompress_path()
+        listed_files = []
+        if os.path.exists(base_path):
+            for root, dirs, files in os.walk(base_path):
+                for f in files:
+                    file_path = "{}/{}".format(root, f)
+                    filename, file_extension = os.path.splitext(file_path)
+                    if self.exclude_extensions and len(self.exclude_extensions) > 0:
+                        if file_extension in self.exclude_extensions:
+                            continue  # jump to the next item on the loop cause the extension on the exclude list
+
+                    if self.filter_extensions and len(self.filter_extensions) > 0:
+                        if file_extension not in self.filter_extensions:
+                            continue  # jump to the next item on the loop cause the extension is not on the filter list
+                    relative_path = file_path.replace(base_path, '')
+                    listed_files.append(relative_path)
+        self.listed_files = listed_files
+        self.save()
+
+
+    def get_listed_files(self):
+        return self.listed_files or []
 
 
     def set_uncompress_path(self):
