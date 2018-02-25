@@ -41,20 +41,27 @@ PROCESS_STATUS = (
     (PROCESS_STATUS_ERROR, _('ERROR')),
 )
 
+
 def get_current_user_or_none():
     current_user = get_current_user()
     return None if current_user is None else current_user
 
 
-class OwnerModelManager(models.Manager):
-    def get_queryset(self):
+class OwnerModelQuerySet(models.QuerySet):
+
+    def all(self):
+        qs = super(OwnerModelQuerySet, self).all()
         current_user = get_current_user()
         if current_user is not None and current_user.is_authenticated:
-            qs = super().get_queryset(owner=current_user)
             if not current_user.is_staff:
-                qs = qs.filter()
+                qs = qs.filter(owner=current_user)
             return qs
-        return super().get_queryset().none()
+        return qs.none()
+
+
+class OwnerModelManager(models.Manager):
+    def get_queryset(self):
+        return OwnerModelQuerySet(self.model, using=self._db)
 
 
 class OwnerModel(models.Model):
