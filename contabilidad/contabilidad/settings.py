@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-
+import datetime
 
 def get_bool_env(key, default):
     value = os.environ.get(key, '')
@@ -326,3 +326,8 @@ if USE_CELERY:
     CELERY_REDIS_MAX_CONNECTIONS = 1
     CELERY_BROKER_POOL_LIMIT = 3
     CELERYD_CONCURRENCY = 1
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
+
+}
