@@ -74,7 +74,7 @@ class CeleryProcessable(models.Model):
     process_updated_at = models.DateTimeField(null=True)
     process_has_error = models.NullBooleanField(default=None)
     process_error_msg = models.TextField(null=True)
-    process_log = ArrayField(JSONField())
+    process_log = ArrayField(JSONField(), default=[])
 
     class Meta:
         abstract = True
