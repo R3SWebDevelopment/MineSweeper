@@ -61,7 +61,7 @@ class OwnerModel(models.Model):
     owner = models.ForeignKey(User, null=True, default=get_current_user_or_none)
     created_at = models.DateTimeField(auto_now_add=True, null=False)
     updated_at = models.DateTimeField(auto_now=True, null=True)
-    object = OwnerModelManager()
+    objects = OwnerModelManager()
 
     class Meta:
         abstract = True
