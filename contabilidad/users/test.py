@@ -30,3 +30,10 @@ class UserTestCase(TestCase):
 
         self.assertNotEqual(self.user_one, None)
 
+        email_address = self.user_one.emailaddress_set.all().first()
+
+        self.assertNotEqual(email_address, None)
+
+        email_address.verified = True
+        email_address.save()
+
