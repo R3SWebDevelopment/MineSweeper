@@ -89,9 +89,7 @@ class UserTestCase(TestCase):
 
         response = client.post('/rest-auth/login/', data, format='json')
 
-        print(response.status_code)
-
-        print(response.content)
+        self.assertEqual(response.status_code, 200)
 
 
 
