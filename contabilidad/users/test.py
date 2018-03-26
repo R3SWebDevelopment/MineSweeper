@@ -8,11 +8,12 @@ import json
 
 class UserTestCase(TestCase):
     user_one = None
-    user_email = "user_1@testing.com"
+    user_one_email = "user_1@testing.com"
+    user_one_password = "Prueba10"
     user_one_data = {
-        "email": user_email,
-        "password1": "Prueba10",
-        "password2": "Prueba10",
+        "email": user_one_email,
+        "password1": user_one_password,
+        "password2": user_one_password,
         "first_name": "User One",
         "last_name": "Testing",
         "country_phone_code": "+52",
@@ -28,7 +29,7 @@ class UserTestCase(TestCase):
 
         self.assertEqual(response.status_code, 201)
 
-        self.user_one = User.objects.filter(email=self.user_email).first()
+        self.user_one = User.objects.filter(email=self.user_one_email).first()
 
         self.assertNotEqual(self.user_one, None)
 
@@ -78,6 +79,19 @@ class UserTestCase(TestCase):
         }
 
         self.assertEqual(response_data, expected_response)
+
+    def test_login_sucess(self):
+        client = APIClient()
+        data = {
+            "email": self.user_one_email,
+            "password": self.user_one_password,
+        }
+
+        response = client.post('/rest-auth/login/', data, format='json')
+
+        print(response.status_code)
+
+        print(response.content)
 
 
 
