@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 from django.test import TestCase
 from django.contrib.auth.models import User
 from .models import Profile
 from rest_framework.test import APIClient
+import json
 
 
 class UserTestCase(TestCase):
@@ -36,4 +38,24 @@ class UserTestCase(TestCase):
 
         email_address.verified = True
         email_address.save()
+
+    def test_registration_password_mismatch(self):
+        client = APIClient()
+        data = {
+            "email": "user_2@testing.com",
+            "password1": "Prueba10",
+            "password2": "Prueba01",
+            "first_name": "User Two",
+            "last_name": "Testing",
+            "country_phone_code": "+52",
+            "mobile_number": "9999999999"
+        }
+        response = client.post('/rest-auth/registration/', data, format='json')
+
+        self.assertEqual(response.status_code, 400)
+        response_data = json.loads(response.content)
+        error_msg = response_data.get('non_field_errors', None)
+        self.assertNotEqual(error_msg, None)
+        self.assertIn('Los dos campos de contraseñas no coinciden entre si.', error_msg)
+
 
