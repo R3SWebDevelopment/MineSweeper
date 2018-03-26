@@ -58,4 +58,26 @@ class UserTestCase(TestCase):
         self.assertNotEqual(error_msg, None)
         self.assertIn('Los dos campos de contraseñas no coinciden entre si.', error_msg)
 
+    def test_registration_missing_payload(self):
+        client = APIClient()
+        data = {
+            "email": "user_2@testing.com",
+            "password1": "Prueba10",
+        }
+        response = client.post('/rest-auth/registration/', data, format='json')
+
+        self.assertEqual(response.status_code, 400)
+        response_data = json.loads(response.content)
+
+        expected_response = {
+            'password2': ['Este campo es requerido.'],
+            'first_name': ['Este campo es requerido.'],
+            'last_name': ['Este campo es requerido.'],
+            'country_phone_code': ['Este campo es requerido.'],
+            'mobile_number': ['Este campo es requerido.']
+        }
+
+        self.assertEqual(response_data, expected_response)
+
+
 
