@@ -80,7 +80,7 @@ class UserTestCase(TestCase):
 
         self.assertEqual(response_data, expected_response)
 
-    def test_login_sucess(self):
+    def test_login_success(self):
         client = APIClient()
         data = {
             "email": self.user_one_email,
