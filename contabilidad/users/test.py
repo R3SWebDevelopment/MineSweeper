@@ -8,13 +8,13 @@ class UserTestCase(TestCase):
     user_one = None
     user_email = "user_1@testing.com"
     user_one_data = {
-            "email": user_email,
-            "password1": "Prueba10",
-            "password2": "Prueba10",
-            "first_name": "User One",
-            "last_name": "Testing",
-            "country_phone_code": "+52",
-            "mobile_number": "9999999999"
+        "email": user_email,
+        "password1": "Prueba10",
+        "password2": "Prueba10",
+        "first_name": "User One",
+        "last_name": "Testing",
+        "country_phone_code": "+52",
+        "mobile_number": "9999999999"
     }
 
     def test_login(self):
