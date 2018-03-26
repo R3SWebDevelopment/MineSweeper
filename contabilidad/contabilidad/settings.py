@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 import datetime
 
+
 def get_bool_env(key, default):
     value = os.environ.get(key, '')
     if not value:
