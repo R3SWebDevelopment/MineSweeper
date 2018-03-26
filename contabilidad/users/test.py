@@ -15,7 +15,7 @@ class UserTestCase(TestCase):
             "last_name": "Testing",
             "country_phone_code": "+52",
             "mobile_number": "9999999999"
-        }
+    }
 
     def test_login(self):
         self.assertEqual("HOLA", "hola".upper())
