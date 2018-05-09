@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     url(r'^system/', include('utils.api.urls', namespace='system_api')),
+    url(r'^mineswipper/', include('mine_swipper.api.urls', namespace='mine_swipper')),
     url(r'^$', schema_view),
     url(r'^avatar/', include('avatar.urls')),
 ]
