@@ -53,15 +53,16 @@ class Game(models.Model):
         return "Game"
 
     @classmethod
-    def create(cls, user, rows=None, columms=None, mines=None):
+    def create(cls, user, rows=None, columns=None, mines=None):
         """
         Creates a new instance of the game if any of the parameters (rows, columns or mines) are null,
         the class randomly assign a value within the max and min values
         """
         rows = random.randint(MIN_MINES, MAX_MINES) if rows is None else rows
-        columms = random.randint(MIN_MINES, MAX_MINES) if columms is None else columms
+        columns = random.randint(MIN_MINES, MAX_MINES) if columns is None else columns
         mines = random.randint(MIN_MINES, MAX_MINES) if mines is None else mines
-        game = cls.objects.create(turn=user, rows=rows, columms=columms, mines_count=mines)
+        print("rows: {} columns: {} mines: {}".format(rows, columns, mines))
+        game = cls.objects.create(turn=user, rows=rows, columns=columns, mines_count=mines)
         game.players.add(user)
         game.build()
         return game
