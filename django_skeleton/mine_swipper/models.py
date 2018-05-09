@@ -240,6 +240,8 @@ class Game(models.Model):
             cell.update({
                 "has_boom": False
             })
+            if [x, y] in self.revelead_cells:
+                self.revelead_cells.append([x, y])
             self.set_cell(x, y, cell)
             if cell.get('count', 0) == 0:  # This cell does not have adjacents
                 self.__reveal_adjacents(user, cell.get('adjacents', []))
