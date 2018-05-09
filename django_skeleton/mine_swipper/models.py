@@ -249,6 +249,34 @@ class Game(models.Model):
             except Exception as e:
                 print("Cell ({}, {}) raises: {}".format(x, y, e))
 
+    @property
+    def cells_simple_matrix(self):
+        """
+        Returns a matrix with string representation of the state of a cell
+        * : Means the cell is not reveal
+        (White Space): Means the cell is reveal
+        F: Means the cell has been marked
+        B: Means the cell has been revealed and has a boom
+        [0-8]: Means the counter of adjancents cells with boom
+        """
+        matrix = [['*' for _ in range(0, self.columns)] for _ in range(0, self.rows)]
+
+        for y, column in enumerate(matrix):
+            for x, value in enumerate(column):
+                cell = self.cell(x, y)
+                if cell.get('is_reveal', False):  # The cell is reveal
+                    if cell.get('has_boom', False):  # The cell has a boom
+                        value = 'B'
+                    elif cell.get('count', 0) == 0:  # The cell does not has adjacents
+                        value = ' '
+                    else:  # The cell does has adjacents
+                        value = '{}'.format(cell.get('count', 0))
+                else:
+                    if cell.get('is_marked', False):  # The cell has been marked
+                        value = 'F'
+                matrix[y][x] = value
+        return matrix
+
     def pause(self, user):
         """
         Pause the time of the game to stop the timer and to prevent any user to do something on the game
