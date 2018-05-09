@@ -215,10 +215,14 @@ class Game(models.Model):
         if boom:
             self.result = "User: {} revealed a Mine at cell ({}, {})".format(user.get_full_name(), x, y)
             self.status = GAME_LOST
+            delta = datetime.datetime.now() - self.started_timestamp.replace(tzinfo=None)
+            self.seconds += delta.seconds
             self.save()
         elif won:
             self.result = "User: {} has won".format(user.get_full_name())
             self.status = GAME_WON
+            delta = datetime.datetime.now() - self.started_timestamp.replace(tzinfo=None)
+            self.seconds += delta.seconds
             self.save()
 
     def join(self, user):
