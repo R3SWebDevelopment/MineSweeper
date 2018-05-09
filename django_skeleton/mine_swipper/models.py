@@ -208,7 +208,7 @@ class Game(models.Model):
         })
         self.set_cell(x, y, cell)
 
-    def reveal_cell(self, user, x, y):
+    def reveal_cell(self, user, x, y, save=True):
         """
         Reveal the given cell on x and y
         """
@@ -228,11 +228,25 @@ class Game(models.Model):
             })
         else:
             if cell.get('count', 0) == 0:  # This cell does not have adjacents
-                pass
+                self.__reveal_adjacents(cell.get('adjacents', []))
             cell.update({
                 "has_boom": False
             })
-        self.set_cell(x, y, cell)
+        self.set_cell(x, y, cell, save=save)
+
+    def __reveal_adjacents(self, user, adjacents=[]):
+        """
+        Reveals adjacents cells, this method assumes that the saving of the state on the database will be handle by the
+        calling method, this method is private, also this method contains any exception that might raise due any
+        validation placed on reveal_cell method, to avoid brake the process
+        """
+        for coordinates in adjacents:
+            x = coordinates[0]
+            y = coordinates[1]
+            try:
+                self.reveal_cell(user, x, y, save=False)
+            except Exception as e:
+                print("Cell ({}, {}) raises: {}".format(x, y, e))
 
     def pause(self, user):
         """
