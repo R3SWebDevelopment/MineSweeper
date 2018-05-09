@@ -3,6 +3,7 @@ from .serializers import GameSerializer
 from ..models import Game
 from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny
+from crum import get_current_user
 
 
 class GameViewSet(viewsets.ModelViewSet):
@@ -11,7 +12,7 @@ class GameViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
 
     def get_player(self):
-        return User.objects.get(pk=1)
+        return get_current_user()
 
     def get_queryset(self):
         qs = super(GameViewSet, self).get_queryset()
