@@ -42,10 +42,62 @@ class Game(models.Model):
     flags = ArrayField(ArrayField(JSONField()))
     payers = models.ManyToManyField(User, related_name="games")
     turn = models.ForeignKey(User, related_name="current_move", null=True, default=None)
-    status = models.IntegerField(null=False, default=DEFAULT_MINES, choices=GAME_STATUS)
+    status = models.IntegerField(null=False, default=GAME_STARTED, choices=GAME_STATUS)
     seconds = models.IntegerField(null=False, default=0)
     started_timestamp = models.DateTimeField(null=False, auto_now_add=True)
     last_turn = models.ForeignKey(User, related_name="last_move", null=True, default=None)
 
     def __str__(self):
         return "Game"
+
+    @classmethod
+    def create(cls, user, rows=None, columms=None, mines=None):
+        """
+        Creates a new instance of the game if any of the parameters (rows, columns or mines) are null,
+        the class randomly assign a value within the max and min values
+        """
+        game = cls.objects.create(turn=user, rows=rows, columms=columms, mines=mines)
+        game.players.add(user)
+        return game
+
+    def build_cells(self):
+        """
+        Builds the cells for the game using the rows, columns and mines parameters
+        """
+        pass
+
+    def join(self, user):
+        """
+        Adds the user to the list of users playing the game
+        """
+        self.players.add(user)
+
+    def leave(self, user):
+        """
+        Removes the user from the list of users playing the game
+        """
+        self.players.remove(user)
+
+    def mark_cell(self, user, x, y):
+        """
+        Marks the given cell on x and y to be a possible cell with boom
+        """
+        pass
+
+    def unmark_cell(self, user, x, y):
+        """
+        Unmarks the given cell on x and y to be a possible cell with boom
+        """
+        pass
+
+    def reveal_cell(self, user, x, y):
+        """
+        Reveal the given cell on x and y
+        """
+        pass
+
+    def pause(self, user):
+        """
+        Pause the time of the game to stop the timer and to prevent any user to do something on the game
+        """
+        pass
