@@ -73,7 +73,7 @@ class GameAccessSerializer(serializers.ModelSerializer):
         return user
 
     def get_token(self, obj):
-        token = Token.objects.create(user=obj)
+        token, _ = Token.objects.get_or_create(user=obj)
         return token.key
 
 
