@@ -5,6 +5,7 @@ from django.contrib.postgres.fields import ArrayField, JSONField
 from django.contrib.postgres.fields.jsonb import JSONField as JSONBField
 from django.utils.translation import ugettext as _
 import random
+import json
 
 DEFAULT_CELLS = 10
 MIN_CELLS = 10
@@ -62,7 +63,6 @@ class Game(models.Model):
         rows = random.randint(MIN_MINES, MAX_MINES) if rows is None else rows
         columns = random.randint(MIN_MINES, MAX_MINES) if columns is None else columns
         mines = random.randint(MIN_MINES, MAX_MINES) if mines is None else mines
-        print("rows: {} columns: {} mines: {}".format(rows, columns, mines))
         game = cls.objects.create(turn=user, rows=rows, columns=columns, mines_count=mines)
         game.players.add(user)
         game.build_cells()
@@ -117,18 +117,16 @@ class Game(models.Model):
             rows = []
             for y in range(0, self.rows - 1):
                 adjacents = get_adjacent(x, y, mines)
-                rows.append({
+                rows.append(json.dumps({
                     "is_marked": False,
                     "is_reveal": False,
                     "has_boom": None,
                     "count": get_adjacents_count(adjacents, mines),
                     "adjacents": adjacents,
-                })
+                }))
             cells.append(rows)
         self.cells = cells
         self.mines = [list(p) for p in mines]
-        print("cells: {}".format(self.cells))
-        print("mines: {}".format(self.mines))
         self.save()
 
     def join(self, user):
