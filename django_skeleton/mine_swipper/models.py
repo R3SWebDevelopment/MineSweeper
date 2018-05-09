@@ -45,7 +45,6 @@ class Game(models.Model):
     mines = ArrayField(ArrayField((models.IntegerField())), null=True)
     revelead_cells = ArrayField(ArrayField((models.IntegerField())), null=True)
     cells = ArrayField(ArrayField(models.TextField(null=False)), null=True)
-    flags = ArrayField(ArrayField(models.TextField(null=False)), null=True)
     players = models.ManyToManyField(User, related_name="games")
     turn = models.ForeignKey(User, related_name="current_move", null=True, default=None)
     status = models.IntegerField(null=False, default=GAME_STARTED, choices=GAME_STATUS)
