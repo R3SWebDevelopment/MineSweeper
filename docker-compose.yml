@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  redis:
+    image: redis
+    ports:
+     - '6378:6378'
+  db:
+    image: postgres
+  web:
+    build: .
+    env_file: docker/local/.env
+    command: python3 django_skeleton/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+  celery:
+    build: .
+    env_file: docker/local/.env
+    command: celery worker --app=django_skeleton.django_skeleton.celery.app -B
+    links:
+      - db
+      - redis
