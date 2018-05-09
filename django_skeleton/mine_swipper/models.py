@@ -197,6 +197,8 @@ class Game(models.Model):
         cell.update({
             "is_marked": True
         })
+        if [x, y] not in self.marked_cells:
+            self.marked_cells.append([x, y])
         self.set_cell(x, y, cell)
 
     def unmark_cell(self, user, x, y):
