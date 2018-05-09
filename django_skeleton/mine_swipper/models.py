@@ -161,22 +161,30 @@ class Game(models.Model):
         """
         Marks the given cell on x and y to be a possible cell with boom
         """
+        if self.status not in [GAME_STARTED]:
+            raise Exception(_('The game is not started'))
         pass
 
     def unmark_cell(self, user, x, y):
         """
         Unmarks the given cell on x and y to be a possible cell with boom
         """
+        if self.status not in [GAME_STARTED]:
+            raise Exception(_('The game is not started'))
         pass
 
     def reveal_cell(self, user, x, y):
         """
         Reveal the given cell on x and y
         """
+        if self.status not in [GAME_STARTED]:
+            raise Exception(_('The game is not started'))
         pass
 
     def pause(self, user):
         """
         Pause the time of the game to stop the timer and to prevent any user to do something on the game
         """
+        if self.status not in [GAME_STARTED]:
+            raise Exception(_('The game is not started'))
         pass
