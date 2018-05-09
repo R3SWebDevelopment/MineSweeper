@@ -74,6 +74,7 @@ class Game(models.Model):
         """
         return [x, y] in self.mines
 
+    @property
     def get_seconds(self):
         """
         Get the seconds of the game
