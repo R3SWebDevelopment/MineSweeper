@@ -64,7 +64,7 @@ class Game(models.Model):
         print("rows: {} columns: {} mines: {}".format(rows, columns, mines))
         game = cls.objects.create(turn=user, rows=rows, columns=columns, mines_count=mines)
         game.players.add(user)
-        game.build()
+        game.build_cells()
         return game
 
     def build_cells(self):
