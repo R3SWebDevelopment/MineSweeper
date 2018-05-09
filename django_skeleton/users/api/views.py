@@ -4,7 +4,16 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework import status
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from rest_auth.registration.views import SocialLoginView
-from .serializers import CommentSerializer
+from .serializers import CommentSerializer, GameAccessSerializer
+from rest_framework import viewsets
+from django.contrib.auth.models import User
+
+
+class GameAccessViewSet(viewsets.ModelViewSet):
+    serializer_class = GameAccessSerializer
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    http_method_names = ['post']
 
 
 class FacebookLogin(SocialLoginView):
