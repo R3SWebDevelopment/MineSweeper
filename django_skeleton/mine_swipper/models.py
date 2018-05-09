@@ -68,6 +68,13 @@ class Game(models.Model):
         game.build_cells()
         return game
 
+    def get_seconds(self):
+        seconds = self.seconds
+        if self.status in [GAME_STARTED]:
+            delta = datetime.datetime.now() - self.started_timestamp.replace(tzinfo=None)
+            seconds += delta.seconds
+        return seconds
+
     def cell(self, x, y):
         """
         Returns the data of the cell
