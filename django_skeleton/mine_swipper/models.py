@@ -39,6 +39,7 @@ class Game(models.Model):
             MinValueValidator(MIN_MINES)
         ])
     mines_left = models.IntegerField(null=False, default=0)
+    mines = ArrayField(ArrayField((models.IntegerField())), null=True)
     cells = ArrayField(ArrayField(JSONField()))
     flags = ArrayField(ArrayField(JSONField()))
     payers = models.ManyToManyField(User, related_name="games")
