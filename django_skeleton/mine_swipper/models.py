@@ -72,6 +72,16 @@ class Game(models.Model):
     def cells_count(self):
         return self.rows * self.columns
 
+    @property
+    def are_mines_marked(self):
+        """
+        Return True if all the mine cells has been marked and the only cells none revealed are the one with mines
+        """
+        cells_count = self.cells_count
+        if (cells_count - self.reveled_cells_count) == self.mines_count and self.marks_left == 0:
+            return True
+        return False
+
     @classmethod
     def create(cls, user, rows=None, columns=None, mines=None):
         """
