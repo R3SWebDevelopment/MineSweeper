@@ -153,9 +153,9 @@ class Game(models.Model):
                 y = random.randint(0, self.rows - 1)
             mines.append((x, y))
         cells = []
-        for x in range(0, self.columns - 1):
+        for x in range(0, self.columns):
             rows = []
-            for y in range(0, self.rows - 1):
+            for y in range(0, self.rows):
                 adjacents = get_adjacent(x, y, mines)
                 rows.append(json.dumps({
                     "is_marked": False,
