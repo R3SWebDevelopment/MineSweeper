@@ -213,6 +213,8 @@ class Game(models.Model):
         cell.update({
             "is_marked": False
         })
+        if [x, y] in self.marked_cells:
+            self.marked_cells.remove([x, y])
         self.set_cell(x, y, cell)
 
     def reveal_cell(self, user, x, y, save=True):
