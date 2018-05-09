@@ -9,6 +9,7 @@ class GameViewSet(viewsets.ModelViewSet):
     serializer_class = GameSerializer
     queryset = Game.objects.all()
     permission_classes = (AllowAny,)
+    http_method_names = ['post', 'get']
 
     def get_player(self):
         return get_current_user()
