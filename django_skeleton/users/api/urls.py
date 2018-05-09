@@ -1,9 +1,6 @@
-from django.conf.urls import url
-from rest_framework.urlpatterns import format_suffix_patterns
-from .views import CommentView
+from rest_framework.routers import DefaultRouter
+from .views import GameAccessViewSet
 
-urlpatterns = [
-    url(r'^comments/$', CommentView.as_view()),
-]
-
-urlpatterns = format_suffix_patterns(urlpatterns)
+router = DefaultRouter()
+router.register(r'access', GameAccessViewSet, base_name='access')
+urlpatterns = router.urls
