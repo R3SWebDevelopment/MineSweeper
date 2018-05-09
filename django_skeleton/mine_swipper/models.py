@@ -137,6 +137,14 @@ class Game(models.Model):
         if save:
             self.save()
 
+    def check_board_status(self, user):
+        """
+        Checks if the game is over
+        """
+        if self.status in [GAME_STARTED]:
+            if self.are_mines_marked:
+                self.finish(user, won=True)
+
     def build_cells(self):
         """
         Builds the cells for the game using the rows, columns and mines parameters
@@ -278,6 +286,7 @@ class Game(models.Model):
                 "has_boom": True
             })
             self.set_cell(x, y, cell)
+            self.finish(user, bool=True)
         else:
             cell.update({
                 "has_boom": False
