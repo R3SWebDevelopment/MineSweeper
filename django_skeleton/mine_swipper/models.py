@@ -68,6 +68,12 @@ class Game(models.Model):
         game.build_cells()
         return game
 
+    def cell_has_boom(self, x, y):
+        """
+        Checks if the cell on x and y coordinates there is a boom
+        """
+        return [x, y] in self.mines
+
     def get_seconds(self):
         """
         Get the seconds of the game
