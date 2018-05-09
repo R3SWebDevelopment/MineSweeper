@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.postgres.fields import ArrayField, JSONField
-from django.contrib.postgres.fields.jsonb import JSONField as JSONBField
 from django.utils.translation import ugettext as _
 import random
 import json
@@ -213,4 +212,6 @@ class Game(models.Model):
         """
         if self.status not in [GAME_STARTED]:
             raise Exception(_('The game is not started'))
-        pass
+        self.status = GAME_PAUSED
+
+        self.save()
