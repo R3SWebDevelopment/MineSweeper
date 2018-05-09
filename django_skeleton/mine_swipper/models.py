@@ -69,6 +69,9 @@ class Game(models.Model):
         return game
 
     def get_seconds(self):
+        """
+        Get the seconds of the game
+        """
         seconds = self.seconds
         if self.status in [GAME_STARTED]:
             delta = datetime.datetime.now() - self.started_timestamp.replace(tzinfo=None)
