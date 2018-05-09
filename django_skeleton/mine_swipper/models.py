@@ -195,6 +195,8 @@ class Game(models.Model):
                 }))
             cells.append(rows)
         self.cells = cells
+        self.revelead_cells = []
+        self.marked_cells = []
         self.mines = [list(p) for p in mines]
         self.save()
 
