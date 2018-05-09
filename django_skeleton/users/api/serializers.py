@@ -61,7 +61,7 @@ class GameAccessSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'toke')
+        fields = ('email', 'token')
 
     def create(self, validated_data):
         email = validated_data.get('email').lower()
