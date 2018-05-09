@@ -95,7 +95,7 @@ class Game(models.Model):
         cell = self.cells[x][y]
         return json.loads(cell)
 
-    def set_cell(self, x, y, data):
+    def set_cell(self, x, y, data, save=True):
         """
         Set the data on a cell
         """
@@ -104,7 +104,8 @@ class Game(models.Model):
         if y >= self.rows:
             raise ValueError(_('Out of range row'))
         self.cells[x][y] = json.dumps(data)
-        self.save()
+        if save:
+            self.save()
 
     def build_cells(self):
         """
