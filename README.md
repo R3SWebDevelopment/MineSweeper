@@ -1,3 +1,11 @@
+#Mine Swipper
+
+This project us the https://github.com/R3SWebDevelopment/django_skeleton repository for project setting
+
+This project is the back end (API) for the game mine swipper.
+
+For reference the commits for this project start after commit e72a6ac6f6f4d288196612467260c1817bd4cdb4
+
 #Django Skeleton
 
 This project is already setup to be executed on a docker container.
