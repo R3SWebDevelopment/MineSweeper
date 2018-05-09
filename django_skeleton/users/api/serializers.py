@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from users.models import Profile
 from avatar.models import Avatar
 from utils.api.serializers import CommentSerializer
+from rest_framework.authtoken.models import Token
 
 
 class RegistrationSerializer(RegisterSerializer):
@@ -52,6 +53,28 @@ class LogInSerializer(LoginSerializer):
             'username': attrs.get('email', ''),
         })
         return super(LogInSerializer, self).validate(attrs)
+
+
+class GameAccessSerializer(serializers.ModelSerializer):
+    email = serializers.CharField(write_only=True, required=True, allow_blank=False, trim_whitespace=True)
+    token = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ('email', 'toke')
+
+    def create(self, validated_data):
+        email = validated_data.get('email').lower()
+
+        user = User.objects.filter(email__iexact=email).first()
+        if user is None:
+            user = User.objects.create_user(email, email=email, password=email)
+
+        return user
+
+    def get_token(self, obj):
+        token = Token.objects.create(user=obj)
+        return token.key
 
 
 class ProfileSerializer(serializers.ModelSerializer):
