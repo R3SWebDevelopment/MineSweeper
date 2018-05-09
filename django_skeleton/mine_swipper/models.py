@@ -68,6 +68,10 @@ class Game(models.Model):
     def reveled_cells_count(self):
         return len(self.revelead_cells) if self.revelead_cells is not None else 0
 
+    @property
+    def cells_count(self):
+        return self.rows * self.columns
+
     @classmethod
     def create(cls, user, rows=None, columns=None, mines=None):
         """
