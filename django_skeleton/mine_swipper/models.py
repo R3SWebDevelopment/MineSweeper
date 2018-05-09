@@ -52,6 +52,7 @@ class Game(models.Model):
     seconds = models.IntegerField(null=False, default=0)
     started_timestamp = models.DateTimeField(null=False, auto_now_add=True)
     last_turn = models.ForeignKey(User, related_name="last_move", null=True, default=None)
+    result = models.CharField(max_length=250, null=True, default="")
 
     def __str__(self):
         return "Game"
