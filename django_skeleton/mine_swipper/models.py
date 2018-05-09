@@ -177,8 +177,6 @@ class Game(models.Model):
         """
         if self.status not in [GAME_STARTED]:
             raise Exception(_('The game is not started'))
-        if cell.get('is_marked', False):
-            raise Exception(_('This cell is already marked'))
         cell = self.cell(x, y)
         if not cell.get('is_marked', False):
             raise Exception(_('This cell is not marked'))
@@ -193,7 +191,15 @@ class Game(models.Model):
         """
         if self.status not in [GAME_STARTED]:
             raise Exception(_('The game is not started'))
-        pass
+        cell = self.cell(x, y)
+        if cell.get('is_marked', False):
+            raise Exception(_('This cell is marked'))
+        if cell.get('is_reveal', False):
+            raise Exception(_('This cell is already revealed'))
+        cell.update({
+            "is_reveal": True
+        })
+        self.set_cell(x, y, cell)
 
     def pause(self, user):
         """
