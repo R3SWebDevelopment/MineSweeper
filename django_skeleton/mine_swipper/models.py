@@ -56,6 +56,18 @@ class Game(models.Model):
     def __str__(self):
         return "Game"
 
+    @property
+    def marks_left(self):
+        return self.mines_count - self.marked_cells_count
+
+    @property
+    def marked_cells_count(self):
+        return len(self.marked_cells) if self.marked_cells is not None else 0
+
+    @property
+    def reveled_cells_count(self):
+        return len(self.revelead_cells) if self.revelead_cells is not None else 0
+
     @classmethod
     def create(cls, user, rows=None, columns=None, mines=None):
         """
