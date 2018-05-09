@@ -69,6 +69,9 @@ class Game(models.Model):
         return game
 
     def cell(self, x, y):
+        """
+        Returns the data of the cell
+        """
         if x >= self.columns:
             raise ValueError(_('Out of range column'))
         if y >= self.rows:
@@ -77,6 +80,9 @@ class Game(models.Model):
         return json.loads(cell)
 
     def set_cell(self, x, y, data):
+        """
+        Set the data on a cell
+        """
         if x >= self.columns:
             raise ValueError(_('Out of range column'))
         if y >= self.rows:
