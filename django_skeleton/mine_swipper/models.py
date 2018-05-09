@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.postgres.fields import ArrayField, JSONField
+from django.contrib.postgres.fields.jsonb import JSONField as JSONBField
 from django.utils.translation import ugettext as _
 import random
 
@@ -40,8 +41,8 @@ class Game(models.Model):
         ])
     mines_left = models.IntegerField(null=False, default=0)
     mines = ArrayField(ArrayField((models.IntegerField())), null=True)
-    cells = ArrayField(ArrayField(JSONField()), null=True)
-    flags = ArrayField(ArrayField(JSONField()), null=True)
+    cells = ArrayField(ArrayField(models.TextField(null=False)), null=True)
+    flags = ArrayField(ArrayField(models.TextField(null=False)), null=True)
     players = models.ManyToManyField(User, related_name="games")
     turn = models.ForeignKey(User, related_name="current_move", null=True, default=None)
     status = models.IntegerField(null=False, default=GAME_STARTED, choices=GAME_STATUS)
@@ -126,6 +127,8 @@ class Game(models.Model):
             cells.append(rows)
         self.cells = cells
         self.mines = [list(p) for p in mines]
+        print("cells: {}".format(self.cells))
+        print("mines: {}".format(self.mines))
         self.save()
 
     def join(self, user):
