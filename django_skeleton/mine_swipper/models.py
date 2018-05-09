@@ -217,3 +217,12 @@ class Game(models.Model):
         delta = datetime.datetime.now() - self.started_timestamp.replace(tzinfo=None)
         self.seconds += delta.seconds
         self.save()
+
+    def resume(self, user):
+        """
+        Resume the time of the game to restart the timer and allow any user to do something on the game
+        """
+        if self.status not in [GAME_PAUSED]:
+            raise Exception(_('The game is not paused'))
+        self.started_timestamp = datetime.date.now()
+        self.save()
