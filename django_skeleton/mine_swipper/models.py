@@ -42,7 +42,7 @@ class Game(models.Model):
     mines = ArrayField(ArrayField((models.IntegerField())), null=True)
     cells = ArrayField(ArrayField(JSONField()), null=True)
     flags = ArrayField(ArrayField(JSONField()), null=True)
-    payers = models.ManyToManyField(User, related_name="games")
+    players = models.ManyToManyField(User, related_name="games")
     turn = models.ForeignKey(User, related_name="current_move", null=True, default=None)
     status = models.IntegerField(null=False, default=GAME_STARTED, choices=GAME_STATUS)
     seconds = models.IntegerField(null=False, default=0)
