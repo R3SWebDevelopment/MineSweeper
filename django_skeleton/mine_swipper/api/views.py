@@ -1,7 +1,6 @@
 from rest_framework import viewsets
 from .serializers import GameSerializer
 from ..models import Game
-from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny
 from crum import get_current_user
 
