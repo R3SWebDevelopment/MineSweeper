@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.postgres.fields import ArrayField, JSONField
 from django.utils.translation import ugettext as _
+import random
 
 DEFAULT_CELLS = 10
 MIN_CELLS = 10
@@ -68,7 +69,61 @@ class Game(models.Model):
         """
         Builds the cells for the game using the rows, columns and mines parameters
         """
-        pass
+        def get_adjacent(x, y, mines):
+            adjacents = []
+            if x == 0 and y == 0:
+                adjacents = [(0, 1), (1, 0), (1, 1)]
+            elif x == 0 and y == self.rows - 1:
+                adjacents = [(0, self.rows - 2), (1, self.columns - 1), (1, self.rows - 2)]
+            elif x == self.columns - 1 and y == 0:
+                adjacents = [(self.columns - 2, 0), (self.columns - 2, 1), (self.columns - 1, 1)]
+            elif x == self.columns - 1 and y == self.rows - 1:
+                adjacents = [(self.columns - 2, self.rows - 2), (self.columns - 2, self.rows - 1),
+                             (self.columns - 1, self.rows - 2)]
+            elif y == 0:
+                adjacents = [(x - 1, 0), (x - 1, 1), (x, 1), (x + 1, 0), (x + 1, 1)]
+            elif y == self.rows - 1:
+                adjacents = [(x - 1, self.rows - 1), (x - 1, self.rows - 2), (x, self.rows - 2),
+                             (x + 1, self.rows - 1), (x + 1, self.rows - 2)]
+            elif x == 0:
+                adjacents = [(x, y - 1), (x + 1, y - 1), (x + 1, y), (x + 1, y + 1), (x, y + 1)]
+            elif x == self.columns - 1:
+                adjacents = [(x, y - 1), (x - 1, y - 1), (x - 1, y), (x - 1, y + 1), (x, y + 1)]
+            else:
+                adjacents = [(x - 1, y - 1), (x, y - 1), (x + 1, y - 1), (x - 1, y), (x + 1, y), (x + 1, y + 1),
+                             (x, y + 1), (x + 1, y + 1)]
+            return adjacents
+
+        def get_adjacents_count(adjacents, mines):
+            count = 0
+            for position in adjacents:
+                if position in mines:
+                    count += 1
+            return count
+
+        mines = []
+        for _ in range(0, self.mines_count):
+            x = random.randint(0, self.columns - 1)
+            y = random.randint(0, self.rows - 1)
+            while (x, y) in mines:  # Verify that the position of the boom is not already defined
+                x = random.randint(0, self.columns - 1)
+                y = random.randint(0, self.rows - 1)
+            mines.append((x, y))
+        cells = []
+        for x in range(0, self.columns - 1):
+            rows = []
+            for y in range(0, self.rows - 1):
+                adjacents = get_adjacent(x, y, mines)
+                rows.append({
+                    "is_marked": False,
+                    "is_reveal": False,
+                    "has_boom": None,
+                    "count": get_adjacents_count(adjacents, mines),
+                    "adjacents": adjacents,
+                })
+            cells.append(rows)
+        self.cells = cells
+        self.save()
 
     def join(self, user):
         """
