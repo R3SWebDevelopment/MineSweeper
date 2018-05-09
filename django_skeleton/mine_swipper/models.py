@@ -189,6 +189,8 @@ class Game(models.Model):
         if self.status not in [GAME_STARTED]:
             raise Exception(_('The game is not started'))
         cell = self.cell(x, y)
+        if cell.get('is_reveal', False):
+            raise Exception(_('This cell is already revealed'))
         if cell.get('is_marked', False):
             raise Exception(_('This cell is already marked'))
         cell.update({
