@@ -6,6 +6,7 @@ from django.utils.translation import ugettext as _
 import random
 import json
 import datetime
+import numpy as np
 
 DEFAULT_CELLS = 10
 MIN_CELLS = 10
@@ -282,6 +283,18 @@ class Game(models.Model):
         sec = datetime.timedelta(seconds=self.get_seconds)
         d = datetime.datetime(1, 1, 1) + sec
         return "%d:%d:%d:%d" % (d.day-1, d.hour, d.minute, d.second)
+
+    @property
+    def print_matrix(self):
+        """
+        Prints to console a matrix of string representation of the current state of the board
+        """
+        state = _("Started") if self.status == GAME_STARTED else _("Paused") if self.status == GAME_PAUSED \
+            else _("FINISHED") if self.status in [GAME_WON, GAME_LOST] else _("UNDEFINED")
+        print("State: {}".format(state))
+        print("Rows: {} - Columns: {} - Booms: {}".format(self.rows, self.columns, self.mines_count))
+        print("Time Elapsed: {}".format(self.time_elapsed))
+        print(np.matrix(self.cells_simple_matrix))
 
     def pause(self, user):
         """
