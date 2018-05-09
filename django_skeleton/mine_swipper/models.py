@@ -124,6 +124,7 @@ class Game(models.Model):
                 })
             cells.append(rows)
         self.cells = cells
+        self.mines = [list(p) for p in mines]
         self.save()
 
     def join(self, user):
