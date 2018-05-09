@@ -87,6 +87,7 @@ INSTALLED_APPS = [
     'users',
     'notifications',
     'utils',
+    'mine_swipper',
 ]
 
 MIDDLEWARE = [
