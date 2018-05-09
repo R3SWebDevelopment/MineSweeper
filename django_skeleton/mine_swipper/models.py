@@ -68,6 +68,22 @@ class Game(models.Model):
         game.build_cells()
         return game
 
+    def cell(self, x, y):
+        if x >= self.columns:
+            raise ValueError(_('Out of range column'))
+        if y >= self.rows:
+            raise ValueError(_('Out of range row'))
+        cell = self.cells[x][y]
+        return json.loads(cell)
+
+    def set_cell(self, x, y, data):
+        if x >= self.columns:
+            raise ValueError(_('Out of range column'))
+        if y >= self.rows:
+            raise ValueError(_('Out of range row'))
+        self.cells[x][y] = json.dumps(data)
+        self.save()
+
     def build_cells(self):
         """
         Builds the cells for the game using the rows, columns and mines parameters
