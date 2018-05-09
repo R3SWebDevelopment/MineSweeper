@@ -5,6 +5,7 @@ from django.contrib.postgres.fields import ArrayField, JSONField
 from django.utils.translation import ugettext as _
 import random
 import json
+import datetime
 
 DEFAULT_CELLS = 10
 MIN_CELLS = 10
@@ -213,5 +214,6 @@ class Game(models.Model):
         if self.status not in [GAME_STARTED]:
             raise Exception(_('The game is not started'))
         self.status = GAME_PAUSED
-
+        delta = datetime.datetime.now() - self.started_timestamp.replace(tzinfo=None)
+        self.seconds += delta.seconds
         self.save()
