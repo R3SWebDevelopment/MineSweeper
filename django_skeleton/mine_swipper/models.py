@@ -277,6 +277,12 @@ class Game(models.Model):
                 matrix[y][x] = value
         return matrix
 
+    @property
+    def time_elapsed(self):
+        sec = datetime.timedelta(seconds=self.get_seconds)
+        d = datetime.datetime(1, 1, 1) + sec
+        return "%d:%d:%d:%d" % (d.day-1, d.hour, d.minute, d.second)
+
     def pause(self, user):
         """
         Pause the time of the game to stop the timer and to prevent any user to do something on the game
