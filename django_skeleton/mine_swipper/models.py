@@ -286,7 +286,7 @@ class Game(models.Model):
                 "has_boom": True
             })
             self.set_cell(x, y, cell)
-            self.finish(user, bool=True)
+            self.finish(user, bool=True, x=x, y=y)
         else:
             cell.update({
                 "has_boom": False
