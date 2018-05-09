@@ -2,11 +2,13 @@ from rest_framework import viewsets
 from .serializers import GameSerializer
 from ..models import Game
 from django.contrib.auth.models import User
+from rest_framework.permissions import AllowAny
 
 
 class GameViewSet(viewsets.ModelViewSet):
     serializer_class = GameSerializer
     queryset = Game.objects.all()
+    permission_classes = (AllowAny,)
 
     def get_player(self):
         return User.objects.get(pk=1)
