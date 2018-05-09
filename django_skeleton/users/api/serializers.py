@@ -18,7 +18,6 @@ class RegistrationSerializer(RegisterSerializer):
         model = User
         fields = '__all__'
 
-
     def save(self, request, *args, **kwargs):
         user = super(RegistrationSerializer, self).save(request)
         cleaned_data = self.get_cleaned_data()
