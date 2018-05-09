@@ -221,6 +221,16 @@ class Game(models.Model):
         cell.update({
             "is_reveal": True
         })
+        if self.cell_has_boom(x, y):  # This cell has a boom
+            cell.update({
+                "has_boom": True
+            })
+        else:
+            if cell.get('count', 0) == 0:  # This cell does not have adjacents
+                pass
+            cell.update({
+                "has_boom": False
+            })
         self.set_cell(x, y, cell)
 
     def pause(self, user):
