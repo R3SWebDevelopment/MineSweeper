@@ -200,6 +200,19 @@ class Game(models.Model):
         self.mines = [list(p) for p in mines]
         self.save()
 
+    def finish(self, user, boom=False, won=False, x=0, y=0):
+        """
+        Define the outcome of the game
+        """
+        if boom:
+            self.result = "User: {} revealed a Mine at cell ({}, {})".format(user.get_full_name(), x, y)
+            self.status = GAME_LOST
+            self.save()
+        elif won:
+            self.result = "User: {} has won".format(user.get_full_name())
+            self.status = GAME_WON
+            self.save()
+
     def join(self, user):
         """
         Adds the user to the list of users playing the game
