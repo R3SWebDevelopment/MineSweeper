@@ -228,13 +228,14 @@ class Game(models.Model):
             cell.update({
                 "has_boom": True
             })
+            self.set_cell(x, y, cell)
         else:
-            if cell.get('count', 0) == 0:  # This cell does not have adjacents
-                self.__reveal_adjacents(cell.get('adjacents', []))
             cell.update({
                 "has_boom": False
             })
-        self.set_cell(x, y, cell, save=save)
+            self.set_cell(x, y, cell)
+            if cell.get('count', 0) == 0:  # This cell does not have adjacents
+                self.__reveal_adjacents(user, cell.get('adjacents', []))
 
     def __reveal_adjacents(self, user, adjacents=[]):
         """
