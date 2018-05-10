@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { accessCheck } from '../utils/system';
 import '../css/offcanvas.css';
 import Loading from './loading';
+import ListItem from './list_item';
 import { fetchGames } from '../controllers/system';
 
 class List extends Component{
@@ -40,6 +41,7 @@ class List extends Component{
         <Loading />
       )
     }
+    console.log(this.props.state.System.games)
     return(
       <div className="my-3 p-3 bg-white rounded box-shadow">
           <h1>
@@ -80,62 +82,11 @@ class List extends Component{
           </div>
           <br />
           <h6 className="border-bottom border-gray pb-2 mb-0">Your Games</h6>
-          <div className="media text-muted pt-3">
-              <p className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                  <strong className="d-block text-gray-dark">
-                      <a href="#">
-                          Player ricardo.tercero@r3s.com.mx has the turn
-                      </a>
-                  </strong>
-                  Columns: <strong>48</strong>
-                  X
-                  Rows: <strong>24</strong>
-                  &nbsp;
-                  &mdash;
-                  &nbsp;
-                  Mines: <strong>21</strong>
-                  &nbsp;
-                  &mdash;
-                  &nbsp;
-                  Flag Left: <strong>10</strong>
-                  &nbsp;
-                  &mdash;
-                  &nbsp;
-                  Status: <strong>Started</strong>
-                  &nbsp;
-                  &mdash;
-                  &nbsp;
-                  Elapsed Time: <strong>Days (1) Hours (10) Minutes (2) Seconds (1)</strong>
-              </p>
-          </div>
-          <div className="media text-muted pt-3">
-              <p className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                  <strong className="d-block text-gray-dark">
-                      <a href="#">
-                          Player ricardo.tercero@r3s.com.mx has the turn
-                      </a>
-                  </strong>
-                  Columns: <strong>48</strong>
-                  X
-                  Rows: <strong>24</strong>
-                  &nbsp;
-                  &mdash;
-                  &nbsp;
-                  Mines: <strong>21</strong>
-                  &nbsp;
-                  &mdash;
-                  &nbsp;
-                  Flag Left: <strong>10</strong>
-                  &nbsp;
-                  &mdash;
-                  &nbsp;
-                  Status: <strong>Started</strong>
-                  &nbsp;
-                  &mdash;
-                  &nbsp;
-                  Elapsed Time: <strong>Days (1) Hours (10) Minutes (2) Seconds (1)</strong>
-              </p>
-          </div>
+          {
+            this.props.state.System.games.map(function(game, index, games){
+              return (<ListItem game={game}/>);
+            })
+          }
       </div>
     )
   }

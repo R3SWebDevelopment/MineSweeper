@@ -35,7 +35,7 @@ export const fetchGames = (state, dispatch, callback, errorCallBack) => {
     return result.json()
   })
   .then(data => {
-    dispatch(listGame(data))
+    dispatch(listGame(data.results))
     callback(data);
   })
   .catch(error => {
