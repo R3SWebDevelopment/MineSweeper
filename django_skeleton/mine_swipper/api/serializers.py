@@ -13,8 +13,9 @@ class GameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = ('id', 'is_your_turn', 'matrix', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed',
-                  'players', 'turn')
-        read_only_fields = ('id', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed', 'players', 'turn')
+                  'players', 'turn', 'result', 'status')
+        read_only_fields = ('id', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed', 'players', 'turn',
+                            'result', 'status')
 
     def get_is_your_turn(self, obj):
         player = get_current_user()
@@ -31,8 +32,9 @@ class GameInputSerializer(GameSerializer):
     class Meta:
         model = Game
         fields = ('id', 'is_your_turn', 'matrix', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed',
-                  'players', 'turn', 'x', 'y')
-        read_only_fields = ('id', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed', 'players', 'turn')
+                  'players', 'turn', 'x', 'y', 'result', 'status')
+        read_only_fields = ('id', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed', 'players', 'turn',
+                            'result', 'status')
 
     def mark(self):
         pass
@@ -49,8 +51,9 @@ class GameStatusSerializer(GameSerializer):
     class Meta:
         model = Game
         fields = ('id', 'is_your_turn', 'matrix', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed',
-                  'players', 'turn')
-        read_only_fields = ('id', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed', 'players', 'turn')
+                  'players', 'turn', 'result', 'status')
+        read_only_fields = ('id', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed', 'players', 'turn',
+                            'result', 'status')
 
     def pause(self):
         pass
