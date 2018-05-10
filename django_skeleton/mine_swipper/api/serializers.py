@@ -51,4 +51,4 @@ class GameStatusSerializer(GameSerializer):
         pass
 
     def restart(self):
-        pass
+        self.instance.restart(get_current_user())

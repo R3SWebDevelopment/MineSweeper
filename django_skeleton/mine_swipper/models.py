@@ -401,8 +401,6 @@ class Game(models.Model):
         """
         Restart the board to start all over
         """
-        if self.status not in [GAME_PAUSED]:
-            raise Exception(_('The game is not paused'))
         if not self.is_your_turn(user):
             raise Exception(_('Is not your turn to play'))
         self.marked_cells = []

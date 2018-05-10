@@ -70,6 +70,9 @@ class GameViewSet(viewsets.ModelViewSet):
         """
         Restart the game
         """
-        pass
+        game = self.get_object()
+        serializer = self.get_serializer_class()(game)
+        serializer.restart()
+        return Response(serializer.data)
 
 
