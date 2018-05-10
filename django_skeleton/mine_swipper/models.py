@@ -347,7 +347,7 @@ class Game(models.Model):
     def time_elapsed(self):
         sec = datetime.timedelta(seconds=self.get_seconds)
         d = datetime.datetime(1, 1, 1) + sec
-        return "%d:%d:%d:%d" % (d.day-1, d.hour, d.minute, d.second)
+        return _("Day (%d) Hours (%d) Minutes (%d) Seconds (%d)") % (d.day-1, d.hour, d.minute, d.second)
 
     @property
     def print_matrix(self):
