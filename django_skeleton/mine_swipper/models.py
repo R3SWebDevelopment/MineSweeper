@@ -415,5 +415,6 @@ class Game(models.Model):
                 })
                 self.set_cell(x, y, cell)
         self.seconds = 0
+        self.started_timestamp = datetime.date.now()
         self.save()
 
