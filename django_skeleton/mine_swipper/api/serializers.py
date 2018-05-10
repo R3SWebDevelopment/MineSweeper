@@ -42,7 +42,8 @@ class GameStatusSerializer(GameSerializer):
 
     class Meta:
         model = Game
-        fields = ('id', 'is_your_turn')
+        fields = ('id', 'is_your_turn', 'matrix', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed')
+        read_only_fields = ('id', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed')
 
     def pause(self):
         pass
