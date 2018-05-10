@@ -14,7 +14,7 @@ class GameViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post']
 
     def get_serializer_class(self):
-        if self.action in ['create']:
+        if self.action in ['create', 'retrieve', 'list']:
             return self.serializer_class
         elif self.action in ['mark', 'reveals', 'unmark']:
             return GameInputSerializer
