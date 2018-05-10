@@ -59,6 +59,29 @@ class Game(models.Model):
         return "Game"
 
     @property
+    def cells_data(self):
+        data = {}
+        for x in range(0, self.columns):
+            for y in range(0, self.rows):
+                cell = self.cell(x, y)
+                if cell.get('is_reveal', False):  # The cell is reveal
+                    if cell.get('has_boom', False):  # The cell has a boom
+                        value = 'B'
+                    elif cell.get('count', 0) == 0:  # The cell does not has adjacents
+                        value = ' '
+                    else:  # The cell does has adjacents
+                        value = '{}'.format(cell.get('count', 0))
+                else:
+                    if cell.get('is_marked', False):  # The cell has been marked
+                        value = '?'
+                    else:
+                        value = '*'
+                data.update({
+                    "{}_{}".format(x, y): value
+                })
+        return data
+
+    @property
     def marks_left(self):
         return self.mines_count - self.marked_cells_count
 

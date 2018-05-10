@@ -7,15 +7,16 @@ from crum import get_current_user
 class GameSerializer(serializers.ModelSerializer):
     is_your_turn = serializers.SerializerMethodField(read_only=True)
     matrix = serializers.SerializerMethodField(read_only=True)
+    cells = serializers.SerializerMethodField(read_only=True)
     players = GamePlayerSerializer(many=True)
     turn = GamePlayerSerializer()
 
     class Meta:
         model = Game
         fields = ('id', 'is_your_turn', 'matrix', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed',
-                  'players', 'turn', 'result', 'status')
+                  'players', 'turn', 'result', 'status', 'cells')
         read_only_fields = ('id', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed', 'players', 'turn',
-                            'result', 'status')
+                            'result', 'status', 'cells')
 
     def get_is_your_turn(self, obj):
         player = get_current_user()
@@ -23,6 +24,9 @@ class GameSerializer(serializers.ModelSerializer):
 
     def get_matrix(self, obj):
         return obj.cells_simple_matrix
+
+    def get_cells(self, obj):
+        return obj.cells_data
 
 
 class GameInputSerializer(GameSerializer):
@@ -32,9 +36,9 @@ class GameInputSerializer(GameSerializer):
     class Meta:
         model = Game
         fields = ('id', 'is_your_turn', 'matrix', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed',
-                  'players', 'turn', 'x', 'y', 'result', 'status')
+                  'players', 'turn', 'x', 'y', 'result', 'status', 'cells')
         read_only_fields = ('id', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed', 'players', 'turn',
-                            'result', 'status')
+                            'result', 'status', 'cells')
 
     def mark(self):
         pass
@@ -51,9 +55,9 @@ class GameStatusSerializer(GameSerializer):
     class Meta:
         model = Game
         fields = ('id', 'is_your_turn', 'matrix', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed',
-                  'players', 'turn', 'result', 'status')
+                  'players', 'turn', 'result', 'status', 'cells')
         read_only_fields = ('id', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed', 'players', 'turn',
-                            'result', 'status')
+                            'result', 'status', 'cells')
 
     def pause(self):
         pass
