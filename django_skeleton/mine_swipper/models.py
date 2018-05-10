@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.postgres.fields import ArrayField, JSONField
 from django.utils.translation import ugettext as _
+from django.urls import reverse
 import random
 import json
 import datetime
@@ -415,6 +416,6 @@ class Game(models.Model):
                 })
                 self.set_cell(x, y, cell)
         self.seconds = 0
-        self.started_timestamp = datetime.date.now()
+        self.started_timestamp = datetime.datetime.now()
         self.save()
 

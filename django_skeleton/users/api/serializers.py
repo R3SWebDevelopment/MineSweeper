@@ -77,6 +77,14 @@ class GameAccessSerializer(serializers.ModelSerializer):
         return token.key
 
 
+class GamePlayerSerializer(serializers.ModelSerializer):
+    email = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ('email', )
+
+
 class ProfileSerializer(serializers.ModelSerializer):
     mobile_number = serializers.JSONField(default={'number': '', 'country_code': ''})
     comments = CommentSerializer(read_only=True, many=True)
