@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Container from './components/container';
 //import LoadingApp from './components/loading_app';
 import PropTypes from 'prop-types'
+import './css/style.css';
 /*
 import './css/style.css';
 import './css/form.css';
