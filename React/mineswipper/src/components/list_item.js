@@ -6,13 +6,14 @@ class ListItem extends Component{
 
   render(){
     const status = 'Started';
+    const url = this.props.state.System.pages.GAME.replace(":key", this.props.game.id);
     return(
           <div className="media text-muted pt-3">
             <p className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                 <strong className="d-block text-gray-dark">
-                    <a href="#">
-                        Player {this.props.game.turn.email} has the turn
-                    </a>
+                    <Link to={url}>
+                      Player {this.props.game.turn.email} has the turn
+                    </Link>
                 </strong>
                 Columns: <strong>{this.props.game.columns}</strong>
                 X
