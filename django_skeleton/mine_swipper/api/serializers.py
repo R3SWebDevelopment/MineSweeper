@@ -14,7 +14,7 @@ class GameSerializer(serializers.ModelSerializer):
 
     def get_is_your_turn(self, obj):
         player = get_current_user()
-        return obj.turn == player
+        return obj.is_your_turn(player)
 
     def get_matrix(self, obj):
         return obj.cells_simple_matrix

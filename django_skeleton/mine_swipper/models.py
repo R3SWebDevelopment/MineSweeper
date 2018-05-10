@@ -97,6 +97,12 @@ class Game(models.Model):
         game.build_cells()
         return game
 
+    def is_your_turn(self, user):
+        """
+        Checks if the user has the turn
+        """
+        return self.turn == user
+
     def cell_has_boom(self, x, y):
         """
         Checks if the cell on x and y coordinates there is a boom
