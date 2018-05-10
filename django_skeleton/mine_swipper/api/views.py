@@ -30,4 +30,46 @@ class GameViewSet(viewsets.ModelViewSet):
         player = self.get_player()
         return qs.filter(players__pk=player.pk)
 
+    @action(methods=['post'], detail=True)
+    def reveals(self, request, pk=None):
+        """
+        Reveal the cell on position x and y
+        """
+        pass
+
+    @action(methods=['post'], detail=True)
+    def mark(self, request, pk=None):
+        """
+        Mark the cell on position x and y
+        """
+        pass
+
+    @action(methods=['post'], detail=True)
+    def unmark(self, request, pk=None):
+        """
+        Unmark the cell on position x and y
+        """
+        pass
+
+    @action(methods=['post'], detail=True)
+    def pause(self, request, pk=None):
+        """
+        Pause the game
+        """
+        pass
+
+    @action(methods=['post'], detail=True)
+    def resume(self, request, pk=None):
+        """
+        Resume the game
+        """
+        pass
+
+    @action(methods=['post'], detail=True)
+    def restart(self, request, pk=None):
+        """
+        Restart the game
+        """
+        pass
+
 
