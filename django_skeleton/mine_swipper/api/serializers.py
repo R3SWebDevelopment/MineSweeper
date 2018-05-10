@@ -9,7 +9,8 @@ class GameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
-        fields = ('id', 'is_your_turn', 'matrix')
+        fields = ('id', 'is_your_turn', 'matrix', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed')
+        read_only_fields = ('id', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed')
 
     def get_is_your_turn(self, obj):
         player = get_current_user()
