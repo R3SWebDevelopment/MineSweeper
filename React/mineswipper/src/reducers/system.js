@@ -5,6 +5,11 @@ const initialState = {
   token: null,
   games: [],
   game: null,
+  pages: {
+    HOME: '/',
+    LIST: '/list/',
+    GAME: '/game/:key/',
+  }
 }
 
 const END_POINT = {

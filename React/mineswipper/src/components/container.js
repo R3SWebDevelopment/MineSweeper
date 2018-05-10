@@ -22,9 +22,9 @@ class Container extends Component {
       <BrowserRouter>
         <div id="container">
           <Switch>
-            <Route exact path="/" component={SignIn} />
-            <Route exact path="/list/" component={List} />
-            <Route exact path="/game/:key/" component={Grid} />
+            <Route exact path={this.props.state.System.pages.HOME} component={SignIn} />
+            <Route exact path={this.props.state.System.pages.LIST} component={List} />
+            <Route exact path={this.props.state.System.pages.GAME} component={Grid} />
             <Route component={NotFound} />
           </Switch>
         </div>

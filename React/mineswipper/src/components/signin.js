@@ -23,7 +23,7 @@ class SignIn extends Component{
     this.setState({
       email: ''
     })
-    this.props.history.push('/')
+    this.props.history.push(this.props.state.System.pages.LIST)
   }
 
   accessDenied = (data) => {
