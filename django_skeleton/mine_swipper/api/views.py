@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from .serializers import GameSerializer, GameInputSerializer
+from .serializers import GameSerializer, GameInputSerializer, GameStatusSerializer
 from ..models import Game
 from rest_framework.permissions import AllowAny
 from crum import get_current_user
@@ -19,7 +19,7 @@ class GameViewSet(viewsets.ModelViewSet):
         elif self.action in ['mark', 'reveals', 'unmark']:
             return GameInputSerializer
         elif self.action in ['pause', 'restart', 'resume']:
-            pass
+            return GameStatusSerializer
         return self.serializer_class
 
     def get_player(self):

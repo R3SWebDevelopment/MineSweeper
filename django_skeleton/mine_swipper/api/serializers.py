@@ -31,3 +31,19 @@ class GameInputSerializer(GameSerializer):
 
     def reveals(self):
         pass
+
+
+class GameStatusSerializer(GameSerializer):
+
+    class Meta:
+        model = Game
+        fields = ('id', 'is_your_turn')
+
+    def pause(self):
+        pass
+
+    def resume(self):
+        pass
+
+    def restart(self):
+        pass
