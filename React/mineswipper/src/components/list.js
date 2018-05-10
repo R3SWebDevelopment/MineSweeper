@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { accessCheck } from '../utils/system';
 import '../css/offcanvas.css';
 
 class List extends Component{
@@ -8,9 +9,9 @@ class List extends Component{
   constructor(props){
     super(props)
     this.state = {
-      username: '',
-      password: ''
     }
+
+    accessCheck(this.props.state, this.props.history);
   }
 
   render(){
