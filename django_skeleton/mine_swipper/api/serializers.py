@@ -5,14 +5,18 @@ from crum import get_current_user
 
 class GameSerializer(serializers.ModelSerializer):
     is_your_turn = serializers.SerializerMethodField(read_only=True)
+    matrix = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Game
-        fields = ('id', 'is_your_turn')
+        fields = ('id', 'is_your_turn', 'matrix')
 
     def get_is_your_turn(self, obj):
         player = get_current_user()
         return obj.turn == player
+
+    def get_matrix(self, obj):
+        return obj.cells_simple_matrix
 
 
 class GameInputSerializer(GameSerializer):
