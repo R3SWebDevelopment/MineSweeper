@@ -254,6 +254,8 @@ class Game(models.Model):
             raise Exception(_('This cell is already revealed'))
         if cell.get('is_marked', False):
             raise Exception(_('This cell is already marked'))
+        if not self.is_your_turn(user):
+            raise Exception(_('Is not your turn to play'))
         cell.update({
             "is_marked": True
         })
@@ -270,6 +272,8 @@ class Game(models.Model):
         cell = self.cell(x, y)
         if not cell.get('is_marked', False):
             raise Exception(_('This cell is not marked'))
+        if not self.is_your_turn(user):
+            raise Exception(_('Is not your turn to play'))
         cell.update({
             "is_marked": False
         })
@@ -288,6 +292,8 @@ class Game(models.Model):
             raise Exception(_('This cell is marked'))
         if cell.get('is_reveal', False):
             raise Exception(_('This cell is already revealed'))
+        if not self.is_your_turn(user):
+            raise Exception(_('Is not your turn to play'))
         cell.update({
             "is_reveal": True
         })
@@ -373,6 +379,8 @@ class Game(models.Model):
         """
         if self.status not in [GAME_STARTED]:
             raise Exception(_('The game is not started'))
+        if not self.is_your_turn(user):
+            raise Exception(_('Is not your turn to play'))
         self.status = GAME_PAUSED
         delta = datetime.datetime.now() - self.started_timestamp.replace(tzinfo=None)
         self.seconds += delta.seconds
@@ -384,5 +392,7 @@ class Game(models.Model):
         """
         if self.status not in [GAME_PAUSED]:
             raise Exception(_('The game is not paused'))
+        if not self.is_your_turn(user):
+            raise Exception(_('Is not your turn to play'))
         self.started_timestamp = datetime.date.now()
         self.save()
