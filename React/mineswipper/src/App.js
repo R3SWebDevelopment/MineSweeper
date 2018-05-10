@@ -3,12 +3,8 @@ import { connect } from 'react-redux';
 import Container from './components/container';
 import PropTypes from 'prop-types'
 import './css/style.css';
-/*
-import './css/style.css';
-import './css/form.css';
 import { defineDomain } from './actions/system';
-import { fetchCagalog, fetchAPIValid, setAPITimeStamp } from './controllers/system';
-*/
+
 
 class App extends Component {
 
@@ -22,6 +18,8 @@ class App extends Component {
 
   constructor(props){
     super(props)
+    this.dispatch = this.props.dispatch
+    this.dispatch(defineDomain(this.props.domain))
     this.state = {
     }
   }
