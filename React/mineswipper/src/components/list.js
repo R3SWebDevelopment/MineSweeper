@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { accessCheck } from '../utils/system';
 import '../css/offcanvas.css';
 import Loading from './loading';
+import { fetchGames } from '../controllers/system';
 
 class List extends Component{
 
@@ -12,15 +13,31 @@ class List extends Component{
     this.state = {
       isViewReady: false,
     }
-
     accessCheck(this.props.state, this.props.history);
+  }
+
+  componentDidMount(){
+    fetchGames(this.props.state, this.props.dispatch, this.fetchCallBack.bind(this), this.errorFetchCallBack.bind(this));
+  }
+
+  fetchCallBack = (data) => {
+    const state = this;
+    setTimeout(function(){
+      state.setState({
+        isViewReady: true
+      })
+    }, 500);
+  }
+
+  errorFetchCallBack = (data) => {
+
   }
 
   render(){
     console.log(this.state.isViewReady)
     if(!this.state.isViewReady){
       return (
-        <Loading />  
+        <Loading />
       )
     }
     return(
