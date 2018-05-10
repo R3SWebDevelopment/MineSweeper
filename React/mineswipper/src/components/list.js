@@ -3,18 +3,26 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { accessCheck } from '../utils/system';
 import '../css/offcanvas.css';
+import Loading from './loading';
 
 class List extends Component{
 
   constructor(props){
     super(props)
     this.state = {
+      isViewReady: false,
     }
 
     accessCheck(this.props.state, this.props.history);
   }
 
   render(){
+    console.log(this.state.isViewReady)
+    if(!this.state.isViewReady){
+      return (
+        <Loading />  
+      )
+    }
     return(
       <div className="my-3 p-3 bg-white rounded box-shadow">
           <h1>
