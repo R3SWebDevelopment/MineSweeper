@@ -396,3 +396,26 @@ class Game(models.Model):
             raise Exception(_('Is not your turn to play'))
         self.started_timestamp = datetime.date.now()
         self.save()
+
+    def restart(self, user):
+        """
+        Restart the board to start all over
+        """
+        if self.status not in [GAME_PAUSED]:
+            raise Exception(_('The game is not paused'))
+        if not self.is_your_turn(user):
+            raise Exception(_('Is not your turn to play'))
+        self.marked_cells = []
+        self.revelead_cells = []
+        for x in range(0, self.columns):
+            for y in range(0, self.rows):
+                cell = self.cell(x, y)
+                cell.update({
+                    "is_marked": False,
+                    "is_reveal": False,
+                    "has_boom": None,
+                })
+                self.set_cell(x, y, cell)
+        self.seconds = 0
+        self.save()
+
