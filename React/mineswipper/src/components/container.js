@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import SignIn from './signin';
 import NotFound from './404';
@@ -21,10 +21,12 @@ class Container extends Component {
     return (
       <BrowserRouter>
         <div id="container">
-          <Route exact path="/" component={SignIn} />
-          <Route exact path="/list/" component={List} />
-          <Route exact path="/game/:key/" component={Grid} />
-          <Route component={NotFound} />
+          <Switch>
+            <Route exact path="/" component={SignIn} />
+            <Route exact path="/list/" component={List} />
+            <Route exact path="/game/:key/" component={Grid} />
+            <Route component={NotFound} />
+          </Switch>
         </div>
       </BrowserRouter>
     )
