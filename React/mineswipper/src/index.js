@@ -3,23 +3,24 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
-//import { loadState, saveState } from './utils/localStorage';
+import { System } from './reducers/system';
+import { loadState, saveState } from './utils/localStorage';
 
-//const persistedState = loadState();
+const persistedState = loadState();
 
 const store = createStore(
   combineReducers(
     {
-
+      System
     }
   ),
-  //persistedState
+  persistedState
 );
-/*
+
 store.subscribe(() => {
   saveState(store.getState());
 });
-*/
+
 ReactDOM.render(
   <Provider store={store}>
     <App domain={document.getElementById('root').getAttribute('data-domain')} />

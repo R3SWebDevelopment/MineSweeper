@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-//import Header from './components/header';
 import Container from './components/container';
-//import LoadingApp from './components/loading_app';
 import PropTypes from 'prop-types'
 import './css/style.css';
 /*
