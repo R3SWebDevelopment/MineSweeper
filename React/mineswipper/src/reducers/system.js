@@ -13,6 +13,7 @@ const initialState = {
   domain: '',
   token: null,
   games: [],
+  others: [],
   game: null,
   pages: {
     HOME: '/',
@@ -23,7 +24,7 @@ const initialState = {
 
 const END_POINT = {
   ACCESS: '/users/access/',
-  LIST: '/mineswipper/games/',
+  LIST: '/mineswipper/games/board/',
   CREATE: '/mineswipper/games/',
   RETRIVE: '/mineswipper/games/[GAME]/',
   REVEAL: '/mineswipper/games/[GAME]/reveals/',
