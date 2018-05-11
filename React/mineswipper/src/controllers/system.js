@@ -79,11 +79,11 @@ export const joingGame = (id, state, dispatch, callback, errorCallBack) => {
     return result.json()
   })
   .then(data => {
-    dispatch(joinGame(data.yours, data.others))
+    //dispatch(joinGame(data.yours, data.others))
     callback(data);
   })
   .catch(error => {
-    dispatch(joinGame([], []))
+    //dispatch(joinGame([], []))
     errorCallBack(error);
   })
 }
@@ -101,11 +101,11 @@ export const leavingGame = (id, state, dispatch, callback, errorCallBack) => {
     return result.json()
   })
   .then(data => {
-    dispatch(leaveGame(data.yours, data.others))
+    //dispatch(leaveGame(data.yours, data.others))
     callback(data);
   })
   .catch(error => {
-    dispatch(leaveGame([], []))
+    //dispatch(leaveGame([], []))
     errorCallBack(error);
   })
 }

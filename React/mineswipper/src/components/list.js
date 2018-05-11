@@ -51,6 +51,7 @@ class List extends Component{
     const columns = generateOptions(10, 30);
     const rows = generateOptions(10, 30);
     const mines = generateOptions(10, 30);
+    const history = this.props.history;
     return(
           <div>
             <div className="my-3 p-3 bg-white rounded box-shadow">
@@ -97,7 +98,7 @@ class List extends Component{
                 <h6 className="border-bottom border-gray pb-2 mb-0">Your Games</h6>
                 {
                   this.props.state.System.yours.map(function(game, index, games){
-                    return (<ListItem game={game} others={false}/>);
+                    return (<ListItem game={game} others={false} history={history}/>);
                   })
                 }
             </div>
@@ -106,7 +107,7 @@ class List extends Component{
                 <h6 className="border-bottom border-gray pb-2 mb-0">Other Games</h6>
                 {
                   this.props.state.System.others.map(function(game, index, games){
-                    return (<ListItem game={game} others={true}/>);
+                    return (<ListItem game={game} others={true} history={history}/>);
                   })
                 }
             </div>

@@ -22,11 +22,13 @@ class ListItem extends Component{
   }
 
   successCallBack = (data) => {
-
+    window.location = this.props.state.System.pages.LIST
+    this.props.history.push(this.props.state.System.pages.LIST)
   }
 
   errorCallBack = (data) => {
-
+    window.location = this.props.state.System.pages.LIST
+    this.props.history.push(this.props.state.System.pages.LIST)
   }
 
   render(){
