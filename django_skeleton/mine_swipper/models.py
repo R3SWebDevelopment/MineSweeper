@@ -60,6 +60,9 @@ class Game(models.Model):
 
     @property
     def cells_data(self):
+        """
+        Returns dictionary with the game status
+        """
         data = {}
         for x in range(0, self.columns):
             for y in range(0, self.rows):
