@@ -1,21 +1,31 @@
-import { ACTIONS_TYPES }  from '../actionsTypes/system'
+import { ACTIONS_TYPES }  from '../actionsTypes/system';
+import React from 'react';
+
+export const generateOptions = (min, max) => {
+  return Array(max + 1).fill(1).map(function(value, index){
+    return index
+  }).slice(min, max + 1).map(function(value, index){
+    return (<option value={value} keys={index}>{value}</option>)
+  });
+}
 
 const initialState = {
   domain: '',
   token: null,
   games: [],
+  others: [],
   game: null,
   pages: {
     HOME: '/',
     LIST: '/list/',
     GAME: '/game/:key/',
-  }
+  },
 }
 
 const END_POINT = {
   ACCESS: '/users/access/',
-  LIST: '/mineswipper/games/',
-  CREATE: '/mineswipper/games/',
+  LIST: '/mineswipper/games/board/',
+  CREATE: '/mineswipper/games/creation/',
   RETRIVE: '/mineswipper/games/[GAME]/',
   REVEAL: '/mineswipper/games/[GAME]/reveals/',
   MARK: '/mineswipper/games/[GAME]/mark/',
@@ -49,12 +59,14 @@ export function System(state=initialState, action){
     case ACTIONS_TYPES.LIST_GAMES:
       return {
         ...state,
-        games: action.games,
+        yours: action.yours,
+        others: action.others,
       }
     case ACTIONS_TYPES.CREATE_GAME:
       return {
         ...state,
-        game: action.game,
+        yours: action.yours,
+        others: action.others,
       }
     case ACTIONS_TYPES.RETRIVE_GAME:
       return {

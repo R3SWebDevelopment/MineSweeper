@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { accessCheck } from '../utils/system';
+import { onChangeInput } from '../utils/inputs';
 import '../css/offcanvas.css';
 import Loading from './loading';
 import ListItem from './list_item';
 import { fetchGames } from '../controllers/system';
+import { generateOptions } from '../reducers/system';
 
 class List extends Component{
 
@@ -12,6 +14,9 @@ class List extends Component{
     super(props)
     this.state = {
       isViewReady: false,
+      rows: null,
+      columns: null,
+      mines: null,
     }
     accessCheck(this.props.state, this.props.history);
   }
@@ -33,58 +38,79 @@ class List extends Component{
 
   }
 
+  changeOptions = (evt) => {
+    onChangeInput(evt, this);
+  }
+
   render(){
     if(!this.state.isViewReady){
       return (
         <Loading />
       )
     }
+    const columns = generateOptions(10, 30);
+    const rows = generateOptions(10, 30);
+    const mines = generateOptions(10, 30);
     return(
-      <div className="my-3 p-3 bg-white rounded box-shadow">
-          <h1>
-              Mine Swipper
-          </h1>
-          <br />
-          <div className="row">
-              <div className="col-lg-12">
-                  <h6>
-                      <strong>
-                          Create new Game
-                      </strong>
-                  </h6>
-                  <div className="input-group">
-                    <div className="input-group-prepend">
-                      <span className="input-group-text" id="">Columns</span>
+          <div>
+            <div className="my-3 p-3 bg-white rounded box-shadow">
+                <h1>
+                    Mine Swipper
+                </h1>
+                <br />
+                <div className="row">
+                    <div className="col-lg-12">
+                        <h6>
+                            <strong>
+                                Create new Game
+                            </strong>
+                        </h6>
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text" id="">Columns</span>
+                          </div>
+                          <select type="text" className="form-control" name="columns" onChange={this.changeOptions.bind(this)}>
+                              <option value="null">Random</option>
+                              {columns}
+                          </select>
+                          <div className="input-group-prepend">
+                            <span className="input-group-text" id="">Rows</span>
+                          </div>
+                          <select type="text" className="form-control" name="rows" onChange={this.changeOptions.bind(this)}>
+                              <option value="null">Random</option>
+                              {rows}
+                          </select>
+                          <div className="input-group-prepend">
+                            <span className="input-group-text" id="">Mines</span>
+                          </div>
+                          <select type="text" className="form-control" name="mines" onChange={this.changeOptions.bind(this)}>
+                              <option value="null">Random</option>
+                              {mines}
+                          </select>
+                          <div className="input-group-append">
+                            <button className="btn btn-success" type="button">Create</button>
+                          </div>
+                        </div>
                     </div>
-                    <select type="text" className="form-control">
-                        <option>Select an Option</option>
-                    </select>
-                    <div className="input-group-prepend">
-                      <span className="input-group-text" id="">Rows</span>
-                    </div>
-                    <select type="text" className="form-control">
-                        <option>Select an Option</option>
-                    </select>
-                    <div className="input-group-prepend">
-                      <span className="input-group-text" id="">Mines</span>
-                    </div>
-                    <select type="text" className="form-control">
-                        <option>Select an Option</option>
-                    </select>
-                    <div className="input-group-append">
-                      <button className="btn btn-success" type="button">Create</button>
-                    </div>
-                  </div>
-              </div>
+                </div>
+                <br />
+                <h6 className="border-bottom border-gray pb-2 mb-0">Your Games</h6>
+                {
+                  this.props.state.System.yours.map(function(game, index, games){
+                    return (<ListItem game={game}/>);
+                  })
+                }
+            </div>
+            <div className="my-3 p-3 bg-white rounded box-shadow">
+                <br />
+                <h6 className="border-bottom border-gray pb-2 mb-0">Other Games</h6>
+                {
+                  this.props.state.System.others.map(function(game, index, games){
+                    return (<ListItem game={game}/>);
+                  })
+                }
+            </div>
           </div>
-          <br />
-          <h6 className="border-bottom border-gray pb-2 mb-0">Your Games</h6>
-          {
-            this.props.state.System.games.map(function(game, index, games){
-              return (<ListItem game={game}/>);
-            })
-          }
-      </div>
     )
   }
 }
