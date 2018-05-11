@@ -103,6 +103,30 @@ class GameViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['post'], detail=True)
+    def join(self, request, pk=None):
+        """
+        Join the game
+        """
+        game = self.get_object()
+        serializer = self.get_serializer_class()(game, data=request.data)
+        if serializer.is_valid():
+            serializer.join()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=['post'], detail=True)
+    def leave(self, request, pk=None):
+        """
+        Leave the game
+        """
+        game = self.get_object()
+        serializer = self.get_serializer_class()(game, data=request.data)
+        if serializer.is_valid():
+            serializer.leave()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=['post'], detail=True)
     def resume(self, request, pk=None):
         """
         Resume the game

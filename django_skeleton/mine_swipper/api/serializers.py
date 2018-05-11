@@ -107,3 +107,9 @@ class GameStatusSerializer(GameSerializer):
 
     def restart(self):
         self.instance.restart(get_current_user())
+
+    def join(self):
+        self.instance.join(get_current_user())
+
+    def leave(self):
+        self.instance.leave(get_current_user())
