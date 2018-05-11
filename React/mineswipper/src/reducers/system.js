@@ -25,7 +25,7 @@ const initialState = {
 const END_POINT = {
   ACCESS: '/users/access/',
   LIST: '/mineswipper/games/board/',
-  CREATE: '/mineswipper/games/',
+  CREATE: '/mineswipper/games/creation/',
   RETRIVE: '/mineswipper/games/[GAME]/',
   REVEAL: '/mineswipper/games/[GAME]/reveals/',
   MARK: '/mineswipper/games/[GAME]/mark/',
