@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import '../css/offcanvas.css';
+import '../css/grid.css';
 import Loading from './loading';
 import { accessCheck } from '../utils/system';
-import { fetchGame } from '../controllers/system';
+import { fetchGame, revealCell, markCell, unmarkCell } from '../controllers/system';
 import ListItem from './list_item';
 
 class Grid extends Component{
@@ -41,7 +42,36 @@ class Grid extends Component{
   }
 
   onClickAction = (evt) => {
-    console.log(evt.shiftKey)
+    const valid = (evt.target.innerHTML === "*") ? true : (evt.target.innerHTML === "?") ? true : false;
+    const mark = (evt.target.innerHTML === "*") ? true : false;
+    if(valid){
+      const id = this.state.game.id;
+      const x = evt.target.dataset.x;
+      const y = evt.target.dataset.y;
+      const state = this.props.state;
+      const dispatch = this.props.dispatch;
+      const callback = this.fetchCallBack.bind(this);
+      const errorCallBack = this.errorFetchCallBack.bind(this);
+      let action = null;
+      if(evt.shiftKey){ // Mark or Unmark
+        if(mark){
+          action = markCell.bind(this);
+        }else{
+          action = unmarkCell.bind(this);
+        }
+      }else{ // Reveal
+        action = revealCell.bind(this);
+      }
+      this.setState({
+        isViewReady: false
+      },() => {
+        const data = JSON.stringify({
+          x: x,
+          y: y
+        })
+        action(id, data, state, dispatch, callback, errorCallBack)
+      })
+    }
   }
 
   render(){
@@ -72,7 +102,7 @@ class Grid extends Component{
                         Array(state.game.columns).fill(1).map(function(value, index){
                           const label = state.game.cells[index + "_" + y]
                           return (
-                            <button data-x={index} data-y={y} onClick={onClickAction}>{label}</button>
+                            <button className="cell" data-x={index} data-y={y} onClick={onClickAction}>{label}</button>
                           )
                         })
                       }
