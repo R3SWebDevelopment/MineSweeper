@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 class ListItem extends Component{
 
   render(){
-    const status = (this.props.game.status == 1) ? 'Started' : (this.props.game.status == 2) ? "Paused" : (this.props.game.status == 3) ? "Finished" : "Finished";
+    const status = (this.props.game.status === 1) ? 'Started' : (this.props.game.status === 2) ? "Paused" : (this.props.game.status === 3) ? "Finished" : "Finished";
     const url = this.props.state.System.pages.GAME.replace(":key", this.props.game.id);
     return(
           <div className="media text-muted pt-3">
