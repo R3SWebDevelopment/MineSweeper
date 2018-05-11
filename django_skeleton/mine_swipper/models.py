@@ -131,6 +131,8 @@ class Game(models.Model):
         mines = random.randint(MIN_MINES, MAX_MINES) if mines is None else mines
         game = cls.objects.create(turn=user, rows=rows, columns=columns, mines_count=mines)
         game.players.add(user)
+        game.queue = [user.pk]
+        game.save()
         game.build_cells()
         return game
 
