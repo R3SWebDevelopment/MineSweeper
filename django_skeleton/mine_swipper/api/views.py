@@ -1,7 +1,7 @@
 from rest_framework import viewsets
-from .serializers import GameSerializer, GameInputSerializer, GameStatusSerializer
+from .serializers import GameSerializer, GameInputSerializer, GameStatusSerializer, GameBoardSerializer
 from ..models import Game
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from crum import get_current_user
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -11,7 +11,7 @@ from rest_framework import status
 class GameViewSet(viewsets.ModelViewSet):
     serializer_class = GameSerializer
     queryset = Game.objects.all()
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     http_method_names = ['get', 'post']
 
     def get_serializer_class(self):
@@ -30,6 +30,15 @@ class GameViewSet(viewsets.ModelViewSet):
         qs = super(GameViewSet, self).get_queryset()
         player = self.get_player()
         return qs.filter(players__pk=player.pk)
+
+    @action(methods=['get'], detail=False)
+    def board(self, request):
+        """
+        Returns the game boar list
+        """
+        serializer = GameBoardSerializer({})
+        print(serializer.data)
+        return Response(serializer.data)
 
     @action(methods=['post'], detail=True)
     def reveals(self, request, pk=None):
