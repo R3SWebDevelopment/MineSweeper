@@ -44,6 +44,25 @@ class GameBoardSerializer(serializers.Serializer):
         return GameSerializer(qs, many=True).data
 
 
+class GameCreationSerializer(GameSerializer):
+    columns = serializers.IntegerField(write_only=True, required=False)
+    rows = serializers.IntegerField(write_only=True, required=False)
+    mines = serializers.IntegerField(write_only=True, required=False)
+
+    class Meta:
+        model = Game
+        fields = ('id', 'is_your_turn', 'matrix', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed',
+                  'players', 'turn', 'columns', 'rows', 'mines', 'result', 'status', 'cells')
+        read_only_fields = ('id', 'marks_left', 'mines_count', 'rows', 'columns', 'time_elapsed', 'players', 'turn',
+                            'result', 'status', 'cells')
+
+    def creation(self):
+        columns = self.validated_data.get('columns', None)
+        rows = self.validated_data.get('rows', None)
+        mines = self.validated_data.get('mines', None)
+        self.instance.create(get_current_user(), rows=rows, columns=columns, mines=mines)
+
+
 class GameInputSerializer(GameSerializer):
     x = serializers.IntegerField(write_only=True, required=True)
     y = serializers.IntegerField(write_only=True, required=True)
