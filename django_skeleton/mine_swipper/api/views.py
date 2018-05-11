@@ -49,9 +49,11 @@ class GameViewSet(viewsets.ModelViewSet):
         Mark the cell on position x and y
         """
         game = self.get_object()
-        serializer = self.get_serializer_class()(game)
-        serializer.mark()
-        return Response(serializer.data)
+        serializer = self.get_serializer_class()(game, data=request.data)
+        if serializer.is_valid():
+            serializer.mark()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['post'], detail=True)
     def unmark(self, request, pk=None):
@@ -59,9 +61,11 @@ class GameViewSet(viewsets.ModelViewSet):
         Unmark the cell on position x and y
         """
         game = self.get_object()
-        serializer = self.get_serializer_class()(game)
-        serializer.unmark()
-        return Response(serializer.data)
+        serializer = self.get_serializer_class()(game, data=request.data)
+        if serializer.is_valid():
+            serializer.unmark()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['post'], detail=True)
     def pause(self, request, pk=None):
@@ -69,9 +73,11 @@ class GameViewSet(viewsets.ModelViewSet):
         Pause the game
         """
         game = self.get_object()
-        serializer = self.get_serializer_class()(game)
-        serializer.pause()
-        return Response(serializer.data)
+        serializer = self.get_serializer_class()(game, data=request.data)
+        if serializer.is_valid():
+            serializer.pause()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['post'], detail=True)
     def resume(self, request, pk=None):
@@ -79,9 +85,11 @@ class GameViewSet(viewsets.ModelViewSet):
         Resume the game
         """
         game = self.get_object()
-        serializer = self.get_serializer_class()(game)
-        serializer.resume()
-        return Response(serializer.data)
+        serializer = self.get_serializer_class()(game, data=request.data)
+        if serializer.is_valid():
+            serializer.resume()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['post'], detail=True)
     def restart(self, request, pk=None):
@@ -89,8 +97,10 @@ class GameViewSet(viewsets.ModelViewSet):
         Restart the game
         """
         game = self.get_object()
-        serializer = self.get_serializer_class()(game)
-        serializer.restart()
-        return Response(serializer.data)
+        serializer = self.get_serializer_class()(game, data=request.data)
+        if serializer.is_valid():
+            serializer.restart()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
