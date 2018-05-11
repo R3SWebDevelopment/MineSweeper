@@ -299,6 +299,7 @@ class Game(models.Model):
         if [x, y] not in self.marked_cells:
             self.marked_cells.append([x, y])
         self.set_cell(x, y, cell)
+        self.swap_turn()
 
     def unmark_cell(self, user, x, y):
         """
@@ -317,6 +318,7 @@ class Game(models.Model):
         if [x, y] in self.marked_cells:
             self.marked_cells.remove([x, y])
         self.set_cell(x, y, cell)
+        self.swap_turn()
 
     def reveal_cell(self, user, x, y, save=True):
         """
