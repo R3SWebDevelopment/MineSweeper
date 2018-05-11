@@ -43,3 +43,25 @@ export const fetchGames = (state, dispatch, callback, errorCallBack) => {
     errorCallBack(error);
   })
 }
+
+export const fetchGame = (id, state, dispatch, callback, errorCallBack) => {
+  fetch(state.System.end_points.RETRIVE.replace("[GAME]", id), {
+    method: "GET",
+    body: {},
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Token ' + state.System.token,
+    },
+  })
+  .then(result => {
+    return result.json()
+  })
+  .then(data => {
+    dispatch(listGame(data.results))
+    callback(data);
+  })
+  .catch(error => {
+    dispatch(listGame([]))
+    errorCallBack(error);
+  })
+}

@@ -35,13 +35,11 @@ class List extends Component{
   }
 
   render(){
-    console.log(this.state.isViewReady)
     if(!this.state.isViewReady){
       return (
         <Loading />
       )
     }
-    console.log(this.props.state.System.games)
     return(
       <div className="my-3 p-3 bg-white rounded box-shadow">
           <h1>
