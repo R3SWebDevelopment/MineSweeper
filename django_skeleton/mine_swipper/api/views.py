@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from .serializers import GameSerializer, GameInputSerializer, GameStatusSerializer, GameBoardSerializer, \
     GameCreationSerializer
 from ..models import Game
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
 from crum import get_current_user
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -12,7 +12,7 @@ from rest_framework import status
 class GameViewSet(viewsets.ModelViewSet):
     serializer_class = GameSerializer
     queryset = Game.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     http_method_names = ['get', 'post']
 
     def get_serializer_class(self):
