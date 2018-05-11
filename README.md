@@ -25,8 +25,8 @@ This project is already setup to be executed on a docker container.
 1. ./manage.py push_fixtures
 
 ### Access point
-Front End: 
-Back End: 
+Front End: http://mineswipper.s3-website-us-west-2.amazonaws.com/
+Back End: http://35.164.70.55:8000
 
 ## Instruccions
 
