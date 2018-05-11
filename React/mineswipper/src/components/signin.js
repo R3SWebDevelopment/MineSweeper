@@ -22,7 +22,11 @@ class SignIn extends Component{
     this.setState({
       email: ''
     })
-    this.props.history.push(this.props.state.System.pages.LIST)
+    const history = this.props.history;
+    const url = this.props.state.System.pages.LIST;
+    setTimeout(function(){
+      history.push(url)
+    }, 800);
   }
 
   accessDenied = (data) => {
