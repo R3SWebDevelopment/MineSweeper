@@ -41,10 +41,14 @@ class GameInputSerializer(GameSerializer):
                             'result', 'status', 'cells')
 
     def mark(self):
-        pass
+        x = self.validated_data.get('x')
+        y = self.validated_data.get('y')
+        self.instance.mark_cell(get_current_user(), x, y)
 
     def unmark(self):
-        pass
+        x = self.validated_data.get('x')
+        y = self.validated_data.get('y')
+        self.instance.unmark_cell(get_current_user(), x, y)
 
     def reveals(self):
         x = self.validated_data.get('x')
