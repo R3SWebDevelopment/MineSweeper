@@ -68,7 +68,7 @@ export const fetchGame = (id, state, dispatch, callback, errorCallBack) => {
 
 export const joingGame = (id, state, dispatch, callback, errorCallBack) => {
   fetch(state.System.end_points.JOIN.replace("[GAME]", id), {
-    method: "GET",
+    method: "POST",
     body: {},
     headers: {
       'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ export const joingGame = (id, state, dispatch, callback, errorCallBack) => {
 
 export const leavingGame = (id, state, dispatch, callback, errorCallBack) => {
   fetch(state.System.end_points.LEAVE.replace("[GAME]", id), {
-    method: "GET",
+    method: "POST",
     body: {},
     headers: {
       'Content-Type': 'application/json',

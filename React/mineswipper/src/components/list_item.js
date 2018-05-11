@@ -1,14 +1,31 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { joingGame, leavingGame } from '../controllers/system';
 
 class ListItem extends Component{
 
   joinGame = (evt) => {
-
+    joingGame(this.props.game.id,
+      this.props.state,
+      this.props.dispatch,
+      this.successCallBack.bind(this),
+      this.errorCallBack.bind(this))
   }
 
   leaveGame = (evt) => {
+    leavingGame(this.props.game.id,
+      this.props.state,
+      this.props.dispatch,
+      this.successCallBack.bind(this),
+      this.errorCallBack.bind(this))
+  }
+
+  successCallBack = (data) => {
+
+  }
+
+  errorCallBack = (data) => {
 
   }
 
