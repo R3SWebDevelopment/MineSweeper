@@ -97,7 +97,7 @@ class List extends Component{
                 <h6 className="border-bottom border-gray pb-2 mb-0">Your Games</h6>
                 {
                   this.props.state.System.yours.map(function(game, index, games){
-                    return (<ListItem game={game}/>);
+                    return (<ListItem game={game} others={false}/>);
                   })
                 }
             </div>
@@ -106,7 +106,7 @@ class List extends Component{
                 <h6 className="border-bottom border-gray pb-2 mb-0">Other Games</h6>
                 {
                   this.props.state.System.others.map(function(game, index, games){
-                    return (<ListItem game={game}/>);
+                    return (<ListItem game={game} others={true}/>);
                   })
                 }
             </div>
