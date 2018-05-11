@@ -35,35 +35,50 @@ class GameViewSet(viewsets.ModelViewSet):
         """
         Reveal the cell on position x and y
         """
-        pass
+        game = self.get_object()
+        serializer = self.get_serializer_class()(game)
+        serializer.reveals()
+        return Response(serializer.data)
 
     @action(methods=['post'], detail=True)
     def mark(self, request, pk=None):
         """
         Mark the cell on position x and y
         """
-        pass
+        game = self.get_object()
+        serializer = self.get_serializer_class()(game)
+        serializer.mark()
+        return Response(serializer.data)
 
     @action(methods=['post'], detail=True)
     def unmark(self, request, pk=None):
         """
         Unmark the cell on position x and y
         """
-        pass
+        game = self.get_object()
+        serializer = self.get_serializer_class()(game)
+        serializer.unmark()
+        return Response(serializer.data)
 
     @action(methods=['post'], detail=True)
     def pause(self, request, pk=None):
         """
         Pause the game
         """
-        pass
+        game = self.get_object()
+        serializer = self.get_serializer_class()(game)
+        serializer.pause()
+        return Response(serializer.data)
 
     @action(methods=['post'], detail=True)
     def resume(self, request, pk=None):
         """
         Resume the game
         """
-        pass
+        game = self.get_object()
+        serializer = self.get_serializer_class()(game)
+        serializer.resume()
+        return Response(serializer.data)
 
     @action(methods=['post'], detail=True)
     def restart(self, request, pk=None):
