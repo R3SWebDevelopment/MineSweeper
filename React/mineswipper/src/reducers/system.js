@@ -65,7 +65,8 @@ export function System(state=initialState, action){
     case ACTIONS_TYPES.CREATE_GAME:
       return {
         ...state,
-        game: action.game,
+        yours: action.yours,
+        others: action.others,
       }
     case ACTIONS_TYPES.RETRIVE_GAME:
       return {

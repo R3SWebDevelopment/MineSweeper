@@ -25,7 +25,8 @@ export const listGame = (yours, others) => {
 export const createGame = game => {
   return {
     type: ACTIONS_TYPES.CREATE_GAME,
-    game: game
+    yours: yours,
+    others: others
   }
 }
 
