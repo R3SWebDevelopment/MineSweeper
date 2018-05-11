@@ -1,4 +1,4 @@
-import { accessGame, listGame } from '../actions/system';
+import { accessGame, listGame, joinGame, leaveGame } from '../actions/system';
 
 
 export const accessGameRequest = (payload, state, dispatch, callback, errorCallBack) => {
@@ -62,6 +62,50 @@ export const fetchGame = (id, state, dispatch, callback, errorCallBack) => {
   })
   .catch(error => {
     dispatch(listGame([]))
+    errorCallBack(error);
+  })
+}
+
+export const joingGame = (id, state, dispatch, callback, errorCallBack) => {
+  fetch(state.System.end_points.JOIN.replace("[GAME]", id), {
+    method: "GET",
+    body: {},
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Token ' + state.System.token,
+    },
+  })
+  .then(result => {
+    return result.json()
+  })
+  .then(data => {
+    dispatch(joinGame(data.yours, data.others))
+    callback(data);
+  })
+  .catch(error => {
+    dispatch(joinGame([], []))
+    errorCallBack(error);
+  })
+}
+
+export const leavingGame = (id, state, dispatch, callback, errorCallBack) => {
+  fetch(state.System.end_points.LEAVE.replace("[GAME]", id), {
+    method: "GET",
+    body: {},
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Token ' + state.System.token,
+    },
+  })
+  .then(result => {
+    return result.json()
+  })
+  .then(data => {
+    dispatch(leaveGame(data.yours, data.others))
+    callback(data);
+  })
+  .catch(error => {
+    dispatch(leaveGame([], []))
     errorCallBack(error);
   })
 }
