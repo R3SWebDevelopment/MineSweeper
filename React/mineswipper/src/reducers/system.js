@@ -70,6 +70,18 @@ export function System(state=initialState, action){
         yours: action.yours,
         others: action.others,
       }
+    case ACTIONS_TYPES.JOIN_GAME:
+      return {
+        ...state,
+        yours: action.yours,
+        others: action.others,
+      }
+    case ACTIONS_TYPES.LEAVE_GAME:
+      return {
+        ...state,
+        yours: action.yours,
+        others: action.others,
+      }
     case ACTIONS_TYPES.RETRIVE_GAME:
       return {
         ...state,
