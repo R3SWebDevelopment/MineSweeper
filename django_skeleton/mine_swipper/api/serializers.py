@@ -36,12 +36,13 @@ class GameBoardSerializer(serializers.Serializer):
     def get_yours(self, obj):
         user = get_current_user()
         qs = Game.objects.filter(players__pk=user.pk)
-        return GameSerializer(qs, many=True)
+        return GameSerializer(qs, many=True).data
 
     def get_others(self, obj):
         user = get_current_user()
         qs = Game.objects.exclude(players__pk=user.pk)
-        return GameSerializer(qs, many=True)
+        return GameSerializer(qs, many=True).data
+
 
 class GameInputSerializer(GameSerializer):
     x = serializers.IntegerField(write_only=True, required=True)
