@@ -33,6 +33,8 @@ const END_POINT = {
   PAUSE: '/mineswipper/games/[GAME]/pause/',
   RESUME: '/mineswipper/games/[GAME]/resume/',
   RESTART: '/mineswipper/games/[GAME]/restart/',
+  JOIN: '/mineswipper/games/[GAME]/join/',
+  LEAVE: '/mineswipper/games/[GAME]/leave/',
 }
 
 function generate_end_points(domain){
