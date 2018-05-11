@@ -34,7 +34,7 @@ class GameViewSet(viewsets.ModelViewSet):
         player = self.get_player()
         return qs.filter(players__pk=player.pk)
 
-    @action(methods=['get'], detail=False)
+    @action(methods=['post'], detail=False)
     def creation(self, request):
         """
         Create a new game

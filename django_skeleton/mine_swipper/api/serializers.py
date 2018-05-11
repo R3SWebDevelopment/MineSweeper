@@ -60,7 +60,7 @@ class GameCreationSerializer(GameSerializer):
         columns = self.validated_data.get('columns', None)
         rows = self.validated_data.get('rows', None)
         mines = self.validated_data.get('mines', None)
-        self.instance.create(get_current_user(), rows=rows, columns=columns, mines=mines)
+        Game.create(get_current_user(), rows=rows, columns=columns, mines=mines)
 
 
 class GameInputSerializer(GameSerializer):
