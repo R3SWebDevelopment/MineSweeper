@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import '../css/signin.css';
 
@@ -16,7 +15,7 @@ class Loading extends Component{
     return(
       <div class="row justify-content-md-center">
           <div class="col col-lg-4">
-              <img src="https://www.musicfreelancer.net/assets/images/ajaxloader.gif" />
+              <img src="https://www.musicfreelancer.net/assets/images/ajaxloader.gif" alt="animation"/>
           </div>
       </div>
     )
