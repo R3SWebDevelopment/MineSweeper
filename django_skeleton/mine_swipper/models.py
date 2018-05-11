@@ -275,6 +275,7 @@ class Game(models.Model):
         self.players.add(user)
         if user.pk not in self.queue:
             self.queue = self.queue.append(user.pk)
+            self.save()
 
     def leave(self, user):
         """
@@ -283,6 +284,7 @@ class Game(models.Model):
         self.players.remove(user)
         if user.pk in self.queue:
             self.queue.remove(user.pk)
+            self.save()
 
     def mark_cell(self, user, x, y):
         """
