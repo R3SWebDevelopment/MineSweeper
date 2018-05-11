@@ -61,7 +61,7 @@ class SignIn extends Component{
                       Please Access Game
                   </h1>
                   <label htmlFor="inputEmail" className="sr-only">Email address</label>
-                  <input type="email" id="email" name="email" className="form-control" placeholder="Email address" required autoFocus value={this.state.email} onChange={this.onChangeInput.bind(this)}/>
+                  <input type="email" id="email" name="email" className="form-control" placeholder="Email address" required autoFocus autocomplete="off" value={this.state.email} onChange={this.onChangeInput.bind(this)}/>
                   <br />
                   <button className="btn btn-lg btn-primary btn-block" type="submit">Access Game</button>
                   <p className="mt-5 mb-3 text-muted text-center">
