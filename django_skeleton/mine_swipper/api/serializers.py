@@ -8,8 +8,8 @@ class GameSerializer(serializers.ModelSerializer):
     is_your_turn = serializers.SerializerMethodField(read_only=True)
     matrix = serializers.SerializerMethodField(read_only=True)
     cells = serializers.SerializerMethodField(read_only=True)
-    players = GamePlayerSerializer(many=True)
-    turn = GamePlayerSerializer()
+    players = GamePlayerSerializer(many=True, read_only=True)
+    turn = GamePlayerSerializer(read_only=True)
 
     class Meta:
         model = Game
@@ -47,7 +47,7 @@ class GameInputSerializer(GameSerializer):
         pass
 
     def reveals(self):
-        pass
+        print(self.validated_data)
 
 
 class GameStatusSerializer(GameSerializer):
@@ -60,10 +60,10 @@ class GameStatusSerializer(GameSerializer):
                             'result', 'status', 'cells')
 
     def pause(self):
-        pass
+        self.instance.pause(get_current_user())
 
     def resume(self):
-        pass
+        self.instance.resume(get_current_user())
 
     def restart(self):
         self.instance.restart(get_current_user())
