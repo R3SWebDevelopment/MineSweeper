@@ -60,6 +60,9 @@ class Game(models.Model):
 
     @property
     def cells_data(self):
+        """
+        Returns dictionary with the game status
+        """
         data = {}
         for x in range(0, self.columns):
             for y in range(0, self.rows):
@@ -243,13 +246,13 @@ class Game(models.Model):
         Define the outcome of the game
         """
         if boom:
-            self.result = "User: {} revealed a Mine at cell ({}, {})".format(user.get_full_name(), x, y)
+            self.result = "User: {} revealed a Mine at cell ({}, {})".format(user.email, x + 1, y + 1)
             self.status = GAME_LOST
             delta = datetime.datetime.now() - self.started_timestamp.replace(tzinfo=None)
             self.seconds += delta.seconds
             self.save()
         elif won:
-            self.result = "User: {} has won".format(user.get_full_name())
+            self.result = "User: {} has won".format(user.email)
             self.status = GAME_WON
             delta = datetime.datetime.now() - self.started_timestamp.replace(tzinfo=None)
             self.seconds += delta.seconds
@@ -441,5 +444,7 @@ class Game(models.Model):
                 self.set_cell(x, y, cell)
         self.seconds = 0
         self.started_timestamp = datetime.datetime.now()
+        self.status = GAME_STARTED
+        self.result = ""
         self.save()
 
