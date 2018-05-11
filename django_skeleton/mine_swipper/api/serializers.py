@@ -45,9 +45,9 @@ class GameBoardSerializer(serializers.Serializer):
 
 
 class GameCreationSerializer(GameSerializer):
-    columns = serializers.IntegerField(write_only=True, required=False)
-    rows = serializers.IntegerField(write_only=True, required=False)
-    mines = serializers.IntegerField(write_only=True, required=False)
+    columns = serializers.IntegerField(write_only=True, required=False, allow_null=True)
+    rows = serializers.IntegerField(write_only=True, required=False, allow_null=True)
+    mines = serializers.IntegerField(write_only=True, required=False, allow_null=True)
 
     class Meta:
         model = Game
