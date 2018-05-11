@@ -127,6 +127,9 @@ class Grid extends Component{
         <Loading />
       )
     }
+    const no_input = (this.state.game.status === 1) ? false : true;
+    const no_action = this.state.game.is_your_turn && no_input;
+    const can_restart = this.state.game.is_your_turn;
     const state = this.state
     const onClickAction = this.onClickAction.bind(this)
     return(
@@ -149,7 +152,15 @@ class Grid extends Component{
                         Array(state.game.columns).fill(1).map(function(value, index){
                           const label = state.game.cells[index + "_" + y]
                           return (
-                            <button className="cell" data-x={index} data-y={y} onClick={onClickAction}>{label}</button>
+                            <button
+                              className="cell"
+                              data-x={index}
+                              data-y={y}
+                              onClick={onClickAction}
+                              disabled={no_input}
+                            >
+                                {label}
+                            </button>
                           )
                         })
                       }
@@ -166,17 +177,17 @@ class Grid extends Component{
                 </button>
                     &nbsp;
                     &nbsp;
-                <button type="button" class="btn btn-danger" onClick={this.pauseGame.bind(this)}>
+                <button type="button" class="btn btn-danger" onClick={this.pauseGame.bind(this)} disabled={no_action}>
                     Pause
                 </button>
                     &nbsp;
                     &nbsp;
-                <button type="button" class="btn btn-success" onClick={this.resumeGame.bind(this)}>
+                <button type="button" class="btn btn-success" onClick={this.resumeGame.bind(this)} disabled={no_action}>
                     Resume
                 </button>
                     &nbsp;
                     &nbsp;
-                <button type="button" class="btn btn-info" onClick={this.restartGame.bind(this)}>
+                <button type="button" class="btn btn-info" onClick={this.restartGame.bind(this)} disabled={!can_restart}>
                     Restart
                 </button>
             </div>
