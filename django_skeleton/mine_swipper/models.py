@@ -246,13 +246,13 @@ class Game(models.Model):
         Define the outcome of the game
         """
         if boom:
-            self.result = "User: {} revealed a Mine at cell ({}, {})".format(user.get_full_name(), x + 1, y + 1)
+            self.result = "User: {} revealed a Mine at cell ({}, {})".format(user.email, x + 1, y + 1)
             self.status = GAME_LOST
             delta = datetime.datetime.now() - self.started_timestamp.replace(tzinfo=None)
             self.seconds += delta.seconds
             self.save()
         elif won:
-            self.result = "User: {} has won".format(user.get_full_name())
+            self.result = "User: {} has won".format(user.email)
             self.status = GAME_WON
             delta = datetime.datetime.now() - self.started_timestamp.replace(tzinfo=None)
             self.seconds += delta.seconds
