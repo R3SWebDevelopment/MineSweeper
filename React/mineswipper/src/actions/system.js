@@ -22,7 +22,7 @@ export const listGame = (yours, others) => {
   }
 }
 
-export const createGame = game => {
+export const createGame = (yours, others) => {
   return {
     type: ACTIONS_TYPES.CREATE_GAME,
     yours: yours,
