@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from crum import get_current_user
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import status
 
 
 class GameViewSet(viewsets.ModelViewSet):
@@ -36,9 +37,11 @@ class GameViewSet(viewsets.ModelViewSet):
         Reveal the cell on position x and y
         """
         game = self.get_object()
-        serializer = self.get_serializer_class()(game)
-        serializer.reveals()
-        return Response(serializer.data)
+        serializer = self.get_serializer_class()(game, data=request.data)
+        if serializer.is_valid():
+            serializer.reveals()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['post'], detail=True)
     def mark(self, request, pk=None):

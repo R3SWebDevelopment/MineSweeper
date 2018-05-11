@@ -47,7 +47,9 @@ class GameInputSerializer(GameSerializer):
         pass
 
     def reveals(self):
-        print(self.validated_data)
+        x = self.validated_data.get('x')
+        y = self.validated_data.get('y')
+        self.instance.reveal_cell(get_current_user(), x, y)
 
 
 class GameStatusSerializer(GameSerializer):

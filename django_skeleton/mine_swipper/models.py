@@ -68,7 +68,7 @@ class Game(models.Model):
                     if cell.get('has_boom', False):  # The cell has a boom
                         value = 'B'
                     elif cell.get('count', 0) == 0:  # The cell does not has adjacents
-                        value = ' '
+                        value = '_'
                     else:  # The cell does has adjacents
                         value = '{}'.format(cell.get('count', 0))
                 else:
