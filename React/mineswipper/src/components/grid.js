@@ -42,7 +42,7 @@ class Grid extends Component{
   }
 
   onClickAction = (evt) => {
-    const valid = (evt.target.innerHTML === "*") ? true : (evt.target.innerHTML === "?") ? true : false;
+    const valid = (evt.target.innerHTML === "*") ? true : (evt.target.innerHTML === "?" && evt.shiftKey) ? true : false;
     const mark = (evt.target.innerHTML === "*") ? true : false;
     if(valid){
       const id = this.state.game.id;

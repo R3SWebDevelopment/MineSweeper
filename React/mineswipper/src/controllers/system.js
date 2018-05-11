@@ -88,13 +88,10 @@ export const revealCell = (id, payload, state, dispatch, callback, errorCallBack
   })
 }
 
-export const markCell = (id, x, y, state, dispatch, callback, errorCallBack) => {
+export const markCell = (id, payload, state, dispatch, callback, errorCallBack) => {
   fetch(state.System.end_points.MARK.replace("[GAME]", id), {
     method: "POST",
-    body: JSON.stringify({
-      x: x,
-      y: y
-    }),
+    body: payload,
     headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Token ' + state.System.token,
@@ -113,13 +110,10 @@ export const markCell = (id, x, y, state, dispatch, callback, errorCallBack) => 
   })
 }
 
-export const unmarkCell = (id, x, y, state, dispatch, callback, errorCallBack) => {
+export const unmarkCell = (id, payload, state, dispatch, callback, errorCallBack) => {
   fetch(state.System.end_points.UNMARK.replace("[GAME]", id), {
     method: "POST",
-    body: JSON.stringify({
-      x: x,
-      y: y
-    }),
+    body: payload,
     headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Token ' + state.System.token,
