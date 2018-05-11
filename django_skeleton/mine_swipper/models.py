@@ -418,7 +418,7 @@ class Game(models.Model):
             raise Exception(_('The game is not paused'))
         if not self.is_your_turn(user):
             raise Exception(_('Is not your turn to play'))
-        self.started_timestamp = datetime.date.now()
+        self.started_timestamp = datetime.datetime.now()
         self.save()
 
     def restart(self, user):
