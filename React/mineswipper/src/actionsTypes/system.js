@@ -7,6 +7,8 @@ export const ACTIONS_TYPES = {
   PAUSE_GAME: 'system/PAUSE_GAME',
   RESUME_GAME: 'system/RESUME_GAME',
   RESTART_GAME: 'system/RESTART_GAME',
+  JOIN_GAME: 'system/JOIN_GAME',
+  LEAVE_GAME: 'system/LEAVE_GAME',
   REVEAL_CELL: 'system/REVEAL_CELL',
   MARK_CELL: 'system/MARK_CELL',
   UNMARK_CELL: 'system/UNMARK_CELL',
