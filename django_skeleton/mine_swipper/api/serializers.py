@@ -29,7 +29,7 @@ class GameSerializer(serializers.ModelSerializer):
         return obj.cells_data
 
 
-class GameBoard(serializers.Serializer):
+class GameBoardSerializer(serializers.Serializer):
     yours = serializers.SerializerMethodField(read_only=True)
     others = serializers.SerializerMethodField(read_only=True)
 
