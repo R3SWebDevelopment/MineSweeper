@@ -22,6 +22,28 @@ export const accessGameRequest = (payload, state, dispatch, callback, errorCallB
     })
 }
 
+export const createGame = (payload, state, dispatch, callback, errorCallBack) => {
+  fetch(state.System.end_points.CREATE, {
+    method: "POST",
+    body: payload,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Token ' + state.System.token,
+    },
+  })
+  .then(result => {
+    return result.json()
+  })
+  .then(data => {
+    dispatch(listGame(data.yours, data.others))
+    callback(data);
+  })
+  .catch(error => {
+    dispatch(listGame([]))
+    errorCallBack(error);
+  })
+}
+
 export const fetchGames = (state, dispatch, callback, errorCallBack) => {
   fetch(state.System.end_points.LIST, {
     method: "GET",

@@ -5,7 +5,7 @@ import { onChangeInput } from '../utils/inputs';
 import '../css/offcanvas.css';
 import Loading from './loading';
 import ListItem from './list_item';
-import { fetchGames } from '../controllers/system';
+import { fetchGames, createGame } from '../controllers/system';
 import { generateOptions } from '../reducers/system';
 
 class List extends Component{
@@ -22,7 +22,11 @@ class List extends Component{
   }
 
   componentDidMount(){
-    fetchGames(this.props.state, this.props.dispatch, this.fetchCallBack.bind(this), this.errorFetchCallBack.bind(this));
+    fetchGames(this.props.state,
+      this.props.dispatch,
+      this.fetchCallBack.bind(this),
+      this.errorFetchCallBack.bind(this)
+    );
   }
 
   fetchCallBack = (data) => {
@@ -40,6 +44,21 @@ class List extends Component{
 
   changeOptions = (evt) => {
     onChangeInput(evt, this);
+  }
+
+  createGame = (evt) => {
+    const payload = JSON.stringify({
+      columns: this.state.columns,
+      rows: this.state.rows,
+      mines: this.state.mines,
+    })
+
+    createGame(payload,
+      this.props.state,
+      this.props.dispatch,
+      this.fetchCallBack.bind(this),
+      this.errorFetchCallBack.bind(this)
+    );
   }
 
   render(){
@@ -89,7 +108,7 @@ class List extends Component{
                               {mines}
                           </select>
                           <div className="input-group-append">
-                            <button className="btn btn-success" type="button">Create</button>
+                            <button className="btn btn-success" type="button" onClick={this.createGame.bind(this)}>Create</button>
                           </div>
                         </div>
                     </div>
