@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { accessCheck } from '../utils/system';
+import { onChangeInput } from '../utils/inputs';
 import '../css/offcanvas.css';
 import Loading from './loading';
 import ListItem from './list_item';
@@ -13,6 +14,9 @@ class List extends Component{
     super(props)
     this.state = {
       isViewReady: false,
+      rows: null,
+      columns: null,
+      mines: null,
     }
     accessCheck(this.props.state, this.props.history);
   }
@@ -32,6 +36,10 @@ class List extends Component{
 
   errorFetchCallBack = (data) => {
 
+  }
+
+  changeOptions = (evt) => {
+    onChangeInput(evt, this);
   }
 
   render(){
@@ -60,21 +68,21 @@ class List extends Component{
                     <div className="input-group-prepend">
                       <span className="input-group-text" id="">Columns</span>
                     </div>
-                    <select type="text" className="form-control">
+                    <select type="text" className="form-control" name="columns" onChange={this.changeOptions.bind(this)}>
                         <option value="null">Random</option>
                         {columns}
                     </select>
                     <div className="input-group-prepend">
                       <span className="input-group-text" id="">Rows</span>
                     </div>
-                    <select type="text" className="form-control">
+                    <select type="text" className="form-control" name="rows" onChange={this.changeOptions.bind(this)}>
                         <option value="null">Random</option>
                         {rows}
                     </select>
                     <div className="input-group-prepend">
                       <span className="input-group-text" id="">Mines</span>
                     </div>
-                    <select type="text" className="form-control">
+                    <select type="text" className="form-control" name="mines" onChange={this.changeOptions.bind(this)}>
                         <option value="null">Random</option>
                         {mines}
                     </select>
