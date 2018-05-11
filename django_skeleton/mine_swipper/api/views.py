@@ -1,5 +1,6 @@
 from rest_framework import viewsets
-from .serializers import GameSerializer, GameInputSerializer, GameStatusSerializer, GameBoardSerializer
+from .serializers import GameSerializer, GameInputSerializer, GameStatusSerializer, GameBoardSerializer, \
+    GameCreationSerializer
 from ..models import Game
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from crum import get_current_user
@@ -21,6 +22,8 @@ class GameViewSet(viewsets.ModelViewSet):
             return GameInputSerializer
         elif self.action in ['pause', 'restart', 'resume']:
             return GameStatusSerializer
+        elif self.action in ['creation', ]:
+            return GameCreationSerializer
         return self.serializer_class
 
     def get_player(self):
@@ -32,12 +35,23 @@ class GameViewSet(viewsets.ModelViewSet):
         return qs.filter(players__pk=player.pk)
 
     @action(methods=['get'], detail=False)
+    def creation(self, request):
+        """
+        Create a new game
+        """
+        serializer = self.get_serializer_class()(data=request.data)
+        if serializer.is_valid():
+            serializer.creation()
+            serializer = GameBoardSerializer({})
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=['get'], detail=False)
     def board(self, request):
         """
         Returns the game boar list
         """
         serializer = GameBoardSerializer({})
-        print(serializer.data)
         return Response(serializer.data)
 
     @action(methods=['post'], detail=True)
