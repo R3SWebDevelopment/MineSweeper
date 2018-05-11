@@ -139,7 +139,7 @@ class Grid extends Component{
                 Mine Swipper
             </h1>
             <h6 class="border-bottom border-gray pb-2 mb-0">Board</h6>
-            <ListItem game={this.state.game}/>
+            <ListItem game={this.state.game} others={false}/>
         </div>
         <div class="my-3 p-3 bg-white rounded box-shadow">
           {
