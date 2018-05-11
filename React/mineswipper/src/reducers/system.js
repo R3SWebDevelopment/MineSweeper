@@ -1,11 +1,11 @@
 import { ACTIONS_TYPES }  from '../actionsTypes/system';
 import React from 'react';
 
-const generateOptions = (min, max) => {
+export const generateOptions = (min, max) => {
   return Array(max + 1).fill(1).map(function(value, index){
     return index
-  }).slice(min, max).map(function(value, index){
-    return (<option value={value}>value</option>)
+  }).slice(min, max + 1).map(function(value, index){
+    return (<option value={value} keys={index}>{value}</option>)
   });
 }
 
@@ -19,9 +19,6 @@ const initialState = {
     LIST: '/list/',
     GAME: '/game/:key/',
   },
-  COLUMN_OPTIONS: generateOptions(10, 30),
-  ROW_OPTIONS: generateOptions(10, 30),
-  MINE_OPTIONS: generateOptions(10, 30),
 }
 
 const END_POINT = {

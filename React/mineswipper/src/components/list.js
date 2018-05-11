@@ -5,6 +5,7 @@ import '../css/offcanvas.css';
 import Loading from './loading';
 import ListItem from './list_item';
 import { fetchGames } from '../controllers/system';
+import { generateOptions } from '../reducers/system';
 
 class List extends Component{
 
@@ -39,6 +40,9 @@ class List extends Component{
         <Loading />
       )
     }
+    const columns = generateOptions(10, 30);
+    const rows = generateOptions(10, 30);
+    const mines = generateOptions(10, 30);
     return(
       <div className="my-3 p-3 bg-white rounded box-shadow">
           <h1>
@@ -58,18 +62,21 @@ class List extends Component{
                     </div>
                     <select type="text" className="form-control">
                         <option value="null">Random</option>
+                        {columns}
                     </select>
                     <div className="input-group-prepend">
                       <span className="input-group-text" id="">Rows</span>
                     </div>
                     <select type="text" className="form-control">
                         <option value="null">Random</option>
+                        {rows}
                     </select>
                     <div className="input-group-prepend">
                       <span className="input-group-text" id="">Mines</span>
                     </div>
                     <select type="text" className="form-control">
                         <option value="null">Random</option>
+                        {mines}
                     </select>
                     <div className="input-group-append">
                       <button className="btn btn-success" type="button">Create</button>
