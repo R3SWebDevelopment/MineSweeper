@@ -351,6 +351,8 @@ class Game(models.Model):
             self.set_cell(x, y, cell)
             if cell.get('count', 0) == 0:  # This cell does not have adjacents
                 self.__reveal_adjacents(user, cell.get('adjacents', []))
+        if save:
+            self.swap_turn()
 
     def __reveal_adjacents(self, user, adjacents=[]):
         """
