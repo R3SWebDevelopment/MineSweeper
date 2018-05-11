@@ -273,12 +273,16 @@ class Game(models.Model):
         Adds the user to the list of users playing the game
         """
         self.players.add(user)
+        if user.pk not in self.queue:
+            self.queue = self.queue.append(user.pk)
 
     def leave(self, user):
         """
         Removes the user from the list of users playing the game
         """
         self.players.remove(user)
+        if user.pk in self.queue:
+            self.queue.remove(user.pk)
 
     def mark_cell(self, user, x, y):
         """
