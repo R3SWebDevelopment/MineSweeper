@@ -30,6 +30,22 @@ export const createGame = (yours, others) => {
   }
 }
 
+export const joinGame = (yours, others) => {
+  return {
+    type: ACTIONS_TYPES.JOIN_GAME,
+    yours: yours,
+    others: others
+  }
+}
+
+export const leaveGame = (yours, others) => {
+  return {
+    type: ACTIONS_TYPES.LEAVE_GAME,
+    yours: yours,
+    others: others
+  }
+}
+
 export const retriveGame = game => {
   return {
     type: ACTIONS_TYPES.RETRIVE_GAME,
