@@ -29,6 +29,20 @@ class GameSerializer(serializers.ModelSerializer):
         return obj.cells_data
 
 
+class GameBoard(serializers.Serializer):
+    yours = serializers.SerializerMethodField(read_only=True)
+    others = serializers.SerializerMethodField(read_only=True)
+
+    def get_yours(self, obj):
+        user = get_current_user()
+        qs = Game.objects.filter(players__pk=user.pk)
+        return GameSerializer(qs, many=True)
+
+    def get_others(self, obj):
+        user = get_current_user()
+        qs = Game.objects.exclude(players__pk=user.pk)
+        return GameSerializer(qs, many=True)
+
 class GameInputSerializer(GameSerializer):
     x = serializers.IntegerField(write_only=True, required=True)
     y = serializers.IntegerField(write_only=True, required=True)
