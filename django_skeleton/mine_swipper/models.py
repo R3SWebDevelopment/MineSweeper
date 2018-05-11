@@ -68,7 +68,6 @@ class Game(models.Model):
             self.turn = self.players.filter(pk=self.queue[0]).first()
             self.save()
 
-
     @property
     def cells_data(self):
         """
