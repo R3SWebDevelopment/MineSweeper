@@ -20,7 +20,7 @@ class GameViewSet(viewsets.ModelViewSet):
             return self.serializer_class
         elif self.action in ['mark', 'reveals', 'unmark']:
             return GameInputSerializer
-        elif self.action in ['pause', 'restart', 'resume']:
+        elif self.action in ['pause', 'restart', 'resume', 'join', 'leave']:
             return GameStatusSerializer
         elif self.action in ['creation', ]:
             return GameCreationSerializer
@@ -32,7 +32,7 @@ class GameViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         qs = super(GameViewSet, self).get_queryset()
         player = self.get_player()
-        return qs.filter(players__pk=player.pk)
+        return qs
 
     @action(methods=['post'], detail=False)
     def creation(self, request):
