@@ -49,6 +49,7 @@ class Game(models.Model):
     cells = ArrayField(ArrayField(models.TextField(null=False)), null=True)
     players = models.ManyToManyField(User, related_name="games")
     turn = models.ForeignKey(User, related_name="current_move", null=True, default=None)
+    queue = ArrayField(models.IntegerField(), null=False, default=[])
     status = models.IntegerField(null=False, default=GAME_STARTED, choices=GAME_STATUS)
     seconds = models.IntegerField(null=False, default=0)
     started_timestamp = models.DateTimeField(null=False, auto_now_add=True)
