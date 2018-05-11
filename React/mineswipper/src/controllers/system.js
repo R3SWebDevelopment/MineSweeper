@@ -65,3 +65,75 @@ export const fetchGame = (id, state, dispatch, callback, errorCallBack) => {
     errorCallBack(error);
   })
 }
+
+export const revealCell = (id, payload, state, dispatch, callback, errorCallBack) => {
+  fetch(state.System.end_points.REVEAL.replace("[GAME]", id), {
+    method: "POST",
+    body: payload,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Token ' + state.System.token,
+    },
+  })
+  .then(result => {
+    return result.json()
+  })
+  .then(data => {
+    dispatch(listGame(data.results))
+    callback(data);
+  })
+  .catch(error => {
+    dispatch(listGame([]))
+    errorCallBack(error);
+  })
+}
+
+export const markCell = (id, x, y, state, dispatch, callback, errorCallBack) => {
+  fetch(state.System.end_points.MARK.replace("[GAME]", id), {
+    method: "POST",
+    body: JSON.stringify({
+      x: x,
+      y: y
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Token ' + state.System.token,
+    },
+  })
+  .then(result => {
+    return result.json()
+  })
+  .then(data => {
+    dispatch(listGame(data.results))
+    callback(data);
+  })
+  .catch(error => {
+    dispatch(listGame([]))
+    errorCallBack(error);
+  })
+}
+
+export const unmarkCell = (id, x, y, state, dispatch, callback, errorCallBack) => {
+  fetch(state.System.end_points.UNMARK.replace("[GAME]", id), {
+    method: "POST",
+    body: JSON.stringify({
+      x: x,
+      y: y
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Token ' + state.System.token,
+    },
+  })
+  .then(result => {
+    return result.json()
+  })
+  .then(data => {
+    dispatch(listGame(data.results))
+    callback(data);
+  })
+  .catch(error => {
+    dispatch(listGame([]))
+    errorCallBack(error);
+  })
+}

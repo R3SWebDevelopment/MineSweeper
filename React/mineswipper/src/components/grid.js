@@ -71,6 +71,8 @@ class Grid extends Component{
         })
         action(id, data, state, dispatch, callback, errorCallBack)
       })
+    }else{
+      alert("Action no available")
     }
   }
 
@@ -142,7 +144,7 @@ class Grid extends Component{
         <p>
             <strong>Nomenclature</strong><br />
             *     : None Revealed Cell<br />
-            (White Space) : Revealed Cell<br />
+            _ : Revealed Cell<br />
             ?     : Flaged Cell<br />
             B     : Boom<br />
             [1-8] : Adjacents Count
