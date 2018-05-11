@@ -57,19 +57,19 @@ class List extends Component{
                       <span className="input-group-text" id="">Columns</span>
                     </div>
                     <select type="text" className="form-control">
-                        <option>Select an Option</option>
+                        <option value="null">Random</option>
                     </select>
                     <div className="input-group-prepend">
                       <span className="input-group-text" id="">Rows</span>
                     </div>
                     <select type="text" className="form-control">
-                        <option>Select an Option</option>
+                        <option value="null">Random</option>
                     </select>
                     <div className="input-group-prepend">
                       <span className="input-group-text" id="">Mines</span>
                     </div>
                     <select type="text" className="form-control">
-                        <option>Select an Option</option>
+                        <option value="null">Random</option>
                     </select>
                     <div className="input-group-append">
                       <button className="btn btn-success" type="button">Create</button>
