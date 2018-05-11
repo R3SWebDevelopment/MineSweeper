@@ -14,10 +14,11 @@ export const accessGame = token => {
   }
 }
 
-export const listGame = games => {
+export const listGame = (yours, others) => {
   return {
     type: ACTIONS_TYPES.LIST_GAMES,
-    games: games
+    yours: yours,
+    others: others
   }
 }
 

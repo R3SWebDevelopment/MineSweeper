@@ -59,8 +59,8 @@ export function System(state=initialState, action){
     case ACTIONS_TYPES.LIST_GAMES:
       return {
         ...state,
-        games: action.yours,
-        othes: action.others,
+        yours: action.yours,
+        others: action.others,
       }
     case ACTIONS_TYPES.CREATE_GAME:
       return {
