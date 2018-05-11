@@ -59,6 +59,16 @@ class Game(models.Model):
     def __str__(self):
         return "Game"
 
+    def swap_turn(self):
+        """
+        Cicle the turn of the players
+        """
+        if len(self.queue) > 1:
+            self.queue = self.queue[1:] + self.queue[:1]
+            self.turn = self.players.filter(pk=self.queue[0]).first()
+            self.save()
+
+
     @property
     def cells_data(self):
         """
