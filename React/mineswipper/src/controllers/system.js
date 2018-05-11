@@ -131,3 +131,69 @@ export const unmarkCell = (id, payload, state, dispatch, callback, errorCallBack
     errorCallBack(error);
   })
 }
+
+export const pauseGame = (id, state, dispatch, callback, errorCallBack) => {
+  fetch(state.System.end_points.PAUSE.replace("[GAME]", id), {
+    method: "POST",
+    body: {},
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Token ' + state.System.token,
+    },
+  })
+  .then(result => {
+    return result.json()
+  })
+  .then(data => {
+    dispatch(listGame(data.results))
+    callback(data);
+  })
+  .catch(error => {
+    dispatch(listGame([]))
+    errorCallBack(error);
+  })
+}
+
+export const resumeGame = (id, state, dispatch, callback, errorCallBack) => {
+  fetch(state.System.end_points.RESUME.replace("[GAME]", id), {
+    method: "POST",
+    body: {},
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Token ' + state.System.token,
+    },
+  })
+  .then(result => {
+    return result.json()
+  })
+  .then(data => {
+    dispatch(listGame(data.results))
+    callback(data);
+  })
+  .catch(error => {
+    dispatch(listGame([]))
+    errorCallBack(error);
+  })
+}
+
+export const restartGame = (id, state, dispatch, callback, errorCallBack) => {
+  fetch(state.System.end_points.RESTART.replace("[GAME]", id), {
+    method: "POST",
+    body: {},
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Token ' + state.System.token,
+    },
+  })
+  .then(result => {
+    return result.json()
+  })
+  .then(data => {
+    dispatch(listGame(data.results))
+    callback(data);
+  })
+  .catch(error => {
+    dispatch(listGame([]))
+    errorCallBack(error);
+  })
+}
