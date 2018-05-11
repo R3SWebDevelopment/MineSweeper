@@ -5,7 +5,7 @@ import '../css/offcanvas.css';
 import '../css/grid.css';
 import Loading from './loading';
 import { accessCheck } from '../utils/system';
-import { fetchGame, revealCell, markCell, unmarkCell } from '../controllers/system';
+import { fetchGame, revealCell, markCell, unmarkCell, restartGame, resumeGame, pauseGame } from '../controllers/system';
 import ListItem from './list_item';
 
 class Grid extends Component{
@@ -76,6 +76,52 @@ class Grid extends Component{
     }
   }
 
+  goBack = () => {
+    this.props.history.push(this.props.state.System.pages.LIST)
+  }
+
+  pauseGame = () => {
+    const id = this.state.game.id;
+    const state = this.props.state;
+    const dispatch = this.props.dispatch;
+    const callback = this.fetchCallBack.bind(this);
+    const errorCallBack = this.errorFetchCallBack.bind(this);
+    const action = pauseGame.bind(this);
+    this.setState({
+      isViewReady: false
+    },() => {
+      action(id, state, dispatch, callback, errorCallBack)
+    })
+  }
+
+  resumeGame = () => {
+    const id = this.state.game.id;
+    const state = this.props.state;
+    const dispatch = this.props.dispatch;
+    const callback = this.fetchCallBack.bind(this);
+    const errorCallBack = this.errorFetchCallBack.bind(this);
+    const action = resumeGame.bind(this);
+    this.setState({
+      isViewReady: false
+    },() => {
+      action(id, state, dispatch, callback, errorCallBack)
+    })
+  }
+
+  restartGame = () => {
+    const id = this.state.game.id;
+    const state = this.props.state;
+    const dispatch = this.props.dispatch;
+    const callback = this.fetchCallBack.bind(this);
+    const errorCallBack = this.errorFetchCallBack.bind(this);
+    const action = restartGame.bind(this);
+    this.setState({
+      isViewReady: false
+    },() => {
+      action(id, state, dispatch, callback, errorCallBack)
+    })
+  }
+
   render(){
     if(!this.state.isViewReady){
       return (
@@ -116,22 +162,22 @@ class Grid extends Component{
         </div>
         <div class="my-3 p-3 bg-white rounded box-shadow">
             <div class="media text-muted pt-3">
-                <button type="button" class="btn btn-primary">
+                <button type="button" class="btn btn-primary" onClick={this.goBack.bind(this)}>
                     Go Back
                 </button>
                     &nbsp;
                     &nbsp;
-                <button type="button" class="btn btn-danger">
+                <button type="button" class="btn btn-danger" onClick={this.pauseGame.bind(this)}>
                     Pause
                 </button>
                     &nbsp;
                     &nbsp;
-                <button type="button" class="btn btn-success">
+                <button type="button" class="btn btn-success" onClick={this.resumeGame.bind(this)}>
                     Resume
                 </button>
                     &nbsp;
                     &nbsp;
-                <button type="button" class="btn btn-info">
+                <button type="button" class="btn btn-info" onClick={this.restartGame.bind(this)}>
                     Restart
                 </button>
             </div>
