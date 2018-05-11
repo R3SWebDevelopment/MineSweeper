@@ -274,7 +274,7 @@ class Game(models.Model):
         """
         self.players.add(user)
         if user.pk not in self.queue:
-            self.queue = self.queue.append(user.pk)
+            self.queue.append(user.pk)
             self.save()
 
     def leave(self, user):
