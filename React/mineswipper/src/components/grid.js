@@ -2,18 +2,88 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import '../css/offcanvas.css';
+import '../css/grid.css';
+import Loading from './loading';
+import { accessCheck } from '../utils/system';
+import { fetchGame, revealCell, markCell, unmarkCell } from '../controllers/system';
+import ListItem from './list_item';
 
 class Grid extends Component{
 
   constructor(props){
     super(props)
     this.state = {
-      username: '',
-      password: ''
+      isViewReady: false,
+      game: null,
+    }
+    accessCheck(this.props.state, this.props.history);
+  }
+
+  componentDidMount(){
+    fetchGame(this.props.match.params.key,
+      this.props.state,
+      this.props.dispatch,
+      this.fetchCallBack.bind(this),
+      this.errorFetchCallBack.bind(this));
+  }
+
+  fetchCallBack = (data) => {
+    const state = this;
+    setTimeout(function(){
+      state.setState({
+        isViewReady: true,
+        game: data
+      })
+    }, 500);
+  }
+
+  errorFetchCallBack = (data) => {
+
+  }
+
+  onClickAction = (evt) => {
+    const valid = (evt.target.innerHTML === "*") ? true : (evt.target.innerHTML === "?" && evt.shiftKey) ? true : false;
+    const mark = (evt.target.innerHTML === "*") ? true : false;
+    if(valid){
+      const id = this.state.game.id;
+      const x = evt.target.dataset.x;
+      const y = evt.target.dataset.y;
+      const state = this.props.state;
+      const dispatch = this.props.dispatch;
+      const callback = this.fetchCallBack.bind(this);
+      const errorCallBack = this.errorFetchCallBack.bind(this);
+      let action = null;
+      if(evt.shiftKey){ // Mark or Unmark
+        if(mark){
+          action = markCell.bind(this);
+        }else{
+          action = unmarkCell.bind(this);
+        }
+      }else{ // Reveal
+        action = revealCell.bind(this);
+      }
+      this.setState({
+        isViewReady: false
+      },() => {
+        const data = JSON.stringify({
+          x: x,
+          y: y
+        })
+        action(id, data, state, dispatch, callback, errorCallBack)
+      })
+    }else{
+      alert("Action no available")
     }
   }
 
   render(){
+    if(!this.state.isViewReady){
+      return (
+        <Loading />
+      )
+    }
+    const state = this.state
+    const onClickAction = this.onClickAction.bind(this)
     return(
       <div>
         <div class="my-3 p-3 bg-white rounded box-shadow">
@@ -21,96 +91,28 @@ class Grid extends Component{
                 Mine Swipper
             </h1>
             <h6 class="border-bottom border-gray pb-2 mb-0">Board</h6>
-            <div class="media text-muted pt-3">
-                <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                    <strong class="d-block text-gray-dark">
-                        <a href="#">
-                            Player ricardo.tercero@r3s.com.mx has the turn
-                        </a>
-                    </strong>
-                    Columns: <strong>48</strong>
-                    X
-                    Rows: <strong>24</strong>
-                    &nbsp;
-                    &mdash;
-                    &nbsp;
-                    Mines: <strong>21</strong>
-                    &nbsp;
-                    &mdash;
-                    &nbsp;
-                    Flag Left: <strong>10</strong>
-                    &nbsp;
-                    &mdash;
-                    &nbsp;
-                    Status: <strong>Started</strong>
-                    &nbsp;
-                    &mdash;
-                    &nbsp;
-                    Elapsed Time: <strong>Days (1) Hours (10) Minutes (2) Seconds (1)</strong>
-                </p>
-            </div>
+            <ListItem game={this.state.game}/>
         </div>
         <div class="my-3 p-3 bg-white rounded box-shadow">
-            <div class="row justify-content-center">
-                <div class="col">
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
+          {
+            Array(this.state.game.rows).fill(1).map(function(value, index){
+              const y = index;
+              return (
+                <div class="row justify-content-center">
+                    <div class="col">
+                      {
+                        Array(state.game.columns).fill(1).map(function(value, index){
+                          const label = state.game.cells[index + "_" + y]
+                          return (
+                            <button className="cell" data-x={index} data-y={y} onClick={onClickAction}>{label}</button>
+                          )
+                        })
+                      }
+                    </div>
                 </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col">
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col">
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col">
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col">
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col">
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                    <button>*</button>
-                </div>
-            </div>
+              )
+            })
+          }
         </div>
         <div class="my-3 p-3 bg-white rounded box-shadow">
             <div class="media text-muted pt-3">
@@ -135,10 +137,15 @@ class Grid extends Component{
             </div>
         </div>
         <p>
-            Nomenclature<br />
+            <strong>Actions</strong><br />
+            Left Click     : Reveal Cell<br />
+            Left Click + Shift Key    : Mark or Unmark Cell<br />
+        </p>
+        <p>
+            <strong>Nomenclature</strong><br />
             *     : None Revealed Cell<br />
-            (White Space) : Revealed Cell<br />
-            F     : Flaged Cell<br />
+            _ : Revealed Cell<br />
+            ?     : Flaged Cell<br />
             B     : Boom<br />
             [1-8] : Adjacents Count
         </p>
